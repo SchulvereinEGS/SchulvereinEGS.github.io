@@ -1,0 +1,125 @@
+{
+  "_hinweis": "Diese Datei ist der Inhalt der App. Alles, was hier steht, erscheint in der App. Texte in Anfuehrungszeichen aendern, Kommas am Zeilenende stehen lassen.",
+
+  "verein": {
+    "name": "Schulverein der Elbe-Grundschule Tespe e.V.",
+    "kurzname": "Schulverein Tespe",
+    "logo": "logo.png",
+    "claim": "Gemeinsam können wir für unsere Kinder mehr bewegen.",
+    "strasse": "Schulstraße 11",
+    "ort": "21395 Tespe",
+    "email": "schulverein@elbe-grundschule-tespe.de",
+    "register": "Amtsgericht Winsen/Luhe · Vereinsregister Nr. 1135",
+    "gemeinnuetzig": "Gemeinnützig im Sinne der §§ 51 ff. AO – die Beiträge sind steuerlich abzugsfähig.",
+    "satzung": "https://www.elbe-grundschule-tespe.de/schulverein/satzung/",
+    "datenschutz": "https://form.jotform.com/262582471942059"
+  },
+
+  "start": {
+    "text": "Wir sind der Schulverein der Elbe-Grundschule Tespe – ein Vorstand aus fünf Müttern. Wir finanzieren, was der Schuletat nicht hergibt: Spielgeräte, Bücher, Projekttage, Feste und die kleinen Extras, über die sich Kinder am meisten freuen.",
+    "beitrag": "Mitglied werden kostet 15,00 € im Jahr – für die ganze Familie.",
+    "naechster_termin": {
+      "titel": "Halloweenparty – Freitag, 6. November",
+      "text": "18 bis 22 Uhr. Für alle Kinder, Kostüme sehr erwünscht."
+    },
+    "gesucht": "Helfer für Aufbau, Getränke, Buffet und Abbau · Kuchenspenden fürs Gruselbuffet"
+  },
+
+  "mitglied": {
+    "text": "Der Beitrag liegt bei 15,00 € im Jahr und gilt für die ganze Familie. Der Verein ist gemeinnützig, die Beiträge sind steuerlich abzugsfähig, und jeder Euro bleibt an unserer Schule.",
+    "punkte": [
+      "Name und Anschrift der Eltern",
+      "Name und Klasse des Kindes",
+      "E-Mail-Adresse und Telefonnummer",
+      "Geschwisterkind an der Schule – ja oder nein",
+      "IBAN für den jährlichen Einzug"
+    ],
+    "knopf": "Beitrittsformular öffnen",
+    "formular": "https://form.jotform.com/262562217627055"
+  },
+
+  "termine": [
+    {
+      "tag": "06",
+      "monat": "Nov",
+      "titel": "Halloweenparty",
+      "zeit": "18 bis 22 Uhr",
+      "text": "Für alle Kinder, Kostüme sehr erwünscht.",
+      "hinweis": "Bitte beachten: keine Vollmasken, keine Kostüme aus Horrorfilmen oder Serien. Die Aufsicht über die Kinder liegt bei den Eltern.",
+      "status": "Anmeldung offen",
+      "knopf": "Zur Anmeldung",
+      "formular": "https://form.jotform.com/262572074556058"
+    },
+    {
+      "tag": "28",
+      "monat": "Nov",
+      "titel": "Tespe Kinderbasar",
+      "zeit": "10:00 bis 14:00 Uhr",
+      "text": "Früheinlass für Schwangere und Eltern mit Babys ab 9:30 Uhr.",
+      "hinweis": "Anmeldeschluss für Verkäufer: 13. November.",
+      "status": "Anmeldung offen",
+      "knopf": "Als Verkäufer anmelden",
+      "formular": "https://form.jotform.com/262562111123039"
+    },
+    {
+      "tag": "18",
+      "monat": "Dez",
+      "titel": "Kinoabend",
+      "zeit": "",
+      "text": "Nur für Vereinsmitglieder.",
+      "hinweis": "Popcorn, Nachos und Getränke gibt es für kleines Geld – bitte etwas Kleingeld mitgeben.",
+      "status": "Nur für Mitglieder",
+      "knopf": "Zur Anmeldung",
+      "formular": "https://form.jotform.com/262571588091061"
+    }
+  ],
+
+  "helfen": {
+    "text": "Ihr müsst kein Mitglied sein, um zu helfen. Trag dich ein, wähle aus, wobei du mit anpacken magst – wir melden uns rechtzeitig vor dem Termin.",
+    "punkte": [
+      "Tespe Kinderbasar – Aufbau und Kasse",
+      "Halloweenparty – Getränke und Buffet",
+      "Einschulung – Bewirtung der Familien",
+      "Kuchen backen – immer und für alles",
+      "Öffentlichkeitsarbeit und Fotos"
+    ],
+    "knopf": "Helferformular öffnen",
+    "formular": "https://form.jotform.com/262572170350047"
+  },
+
+  "news": [
+    {
+      "datum": "18. September",
+      "titel": "Die Schul-T-Shirts kommen in Doppelgrößen",
+      "text": "98/104 bis 152/164, in Rosa und in Grün, 10,00 € pro Shirt. Vorne das kleine Schullogo mit dem Namen des Kindes, hinten das große Logo."
+    },
+    {
+      "datum": "14. September",
+      "titel": "Anmeldungen laufen jetzt über die App",
+      "text": "Halloween, Kinderbasar, Kinoabend und die Beitrittserklärung – alles an einer Stelle, ohne Zettel im Ranzen."
+    }
+  ],
+
+  "mehr": {
+    "tshirt": {
+      "titel": "Schul-T-Shirt bestellen",
+      "text": "Rosa oder Grün, Doppelgrößen 98/104 bis 152/164, 10,00 € pro Shirt. Bezahlt wird bar im verschlossenen Umschlag über den Schulvereinsbriefkasten.",
+      "knopf": "Bestellung öffnen",
+      "formular": "https://form.jotform.com/262572233907055"
+    },
+    "kontakt": {
+      "titel": "Kontakt & Ideen",
+      "text": "Eine Frage, ein Vorschlag, eine Idee für ein Fest? Schreib uns.",
+      "knopf": "Nachricht schreiben",
+      "formular": "https://form.jotform.com/262572099771064"
+    }
+  },
+
+  "vorstand": [
+    { "name": "Vanessa Gehler", "amt": "1. Vorsitzende" },
+    { "name": "Natascha Schuldt", "amt": "1. Stellvertreterin" },
+    { "name": "Svenja Birr", "amt": "2. Stellvertreterin" },
+    { "name": "Tina Lassen", "amt": "Kassenwartin" },
+    { "name": "Katrin Uzatis", "amt": "Schriftführerin" }
+  ]
+}
