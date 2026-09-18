@@ -1,7 +1,7 @@
 /* Service Worker: macht die App startbereit, auch wenn das Netz mal weg ist.
    Beim Aenderen von Dateien die VERSION hochzaehlen, damit alle die neue Fassung bekommen. */
-const VERSION = 'schulverein-v1';
-const DATEIEN = ['./', 'index.html', 'app.css', 'app.js', 'inhalte.json', 'logo.png', 'icon-192.png', 'icon-512.png'];
+const VERSION = 'schulverein-v2';
+const DATEIEN = ['./', 'index.html', 'app.css', 'app.js', 'inhalte.json', 'recht.html', 'logo.png', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', ev => {
   ev.waitUntil(caches.open(VERSION).then(c => c.addAll(DATEIEN)).then(() => self.skipWaiting()));

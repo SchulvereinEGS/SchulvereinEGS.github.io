@@ -148,7 +148,7 @@ function seiteMehr(d) {
       <b>${t(v.name)}</b><br>${t(v.strasse)} &middot; ${t(v.ort)}<br>${t(v.email)}<br><br>
       ${t(v.gemeinnuetzig)}<br>${t(v.register)}<br><br>
       <a href="${t(v.satzung)}" target="_blank" rel="noopener">Satzung</a> &middot;
-      <a href="${t(v.datenschutz)}" target="_blank" rel="noopener">Datenschutz</a>
+      <a href="${t(v.recht || 'recht.html')}">Impressum &amp; Datenschutz</a>
     </p>`;
 }
 

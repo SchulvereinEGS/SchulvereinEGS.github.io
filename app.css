@@ -35,11 +35,11 @@ body{
   margin:0;
   background:var(--ground);
   color:var(--ink);
-  font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
   font-size:16px;line-height:1.5;
   padding-block:20px 0;padding-inline:16px;
 }
-h1,h2,h3,.tile b,.tab span{font-family:"Baloo 2","Trebuchet MS",system-ui,sans-serif;font-weight:700;}
+h1,h2,h3,.tile b,.tab span{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;font-weight:700;}
 h1,h2,h3{text-wrap:balance;margin:0;}
 img{max-width:100%;}
 [hidden]{display:none !important;}
@@ -99,7 +99,7 @@ img{max-width:100%;}
   background:var(--surface);border:1px solid var(--line);border-radius:10px;
   text-align:center;padding:6px 2px;line-height:1.1;
 }
-.datum .tag{font-family:"Baloo 2",system-ui,sans-serif;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;}
+.datum .tag{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;}
 .datum .mon{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);}
 .termin h3{font-size:17px;}
 .termin p{margin:2px 0 0;font-size:14px;color:var(--ink-soft);}
