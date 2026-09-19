@@ -83,3 +83,26 @@ Die Knöpfe öffnen weiterhin die bestehenden Jotform-Formulare, die Einträge l
 in die gewohnte Jotform-Tabelle. Wenn die 100 Einsendungen pro Monat eng werden, tauschen
 wir in `inhalte.json` einfach die Adresse hinter `"formular"` gegen ein kostenloses
 Tally-Formular aus. An der App selbst ändert sich dafür nichts.
+
+---
+
+## Benachrichtigungen verschicken
+
+Unter **Mehr** können die Eltern in der App Benachrichtigungen einschalten. Verschickt werden
+sie über die Seite **senden.html**:
+
+`https://schulvereinegs.github.io/senden.html`
+
+Dort Passwort eingeben, Titel und Text tippen, auf *Jetzt senden* klicken. Der Knopf
+„Wie viele Empfänger?" zeigt vorher, wie viele Geräte erreicht werden.
+
+Ein paar Dinge, die man wissen sollte:
+
+- Es erreicht nur Leute, die **die App auf dem Startbildschirm haben** und Benachrichtigungen
+  erlaubt haben. Auf dem iPhone geht es ausschließlich so.
+- Bitte sparsam benutzen. Wer zu oft Nachrichten bekommt, schaltet sie wieder ab – und dann
+  erreicht man ihn auch beim Wichtigen nicht mehr.
+- Eine gesendete Nachricht lässt sich nicht zurückholen.
+
+Die Datei `worker.js` gehört **nicht** zur Webseite – das ist der Versanddienst, der bei
+Cloudflare läuft. Sie liegt nur zur Sicherheit mit im Ordner.

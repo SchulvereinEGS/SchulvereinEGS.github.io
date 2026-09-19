@@ -116,6 +116,14 @@
     }
   },
 
+  "push": {
+    "_hinweis": "dienst = Adresse des Versanddienstes bei Cloudflare. Solange sie leer ist, taucht der Abschnitt in der App nicht auf.",
+    "dienst": "https://schulverein-push.schulverein.workers.dev",
+    "schluessel": "BDHozAMANdtXntm7gzvAYVjcgWqNrS1VrBEi3o03xgEhqbmQzw6v70B6XNjChhiY1CifOr8DsOZzcLbSNad_JFo",
+    "titel": "Benachrichtigungen",
+    "text": "Wir melden uns nur, wenn es etwas Wichtiges gibt – neue Termine, Anmeldeschluss, kurzfristige Änderungen. Höchstens ein paar Mal im Jahr."
+  },
+
   "vorstand": [
     { "name": "Vanessa Gehler", "amt": "1. Vorsitzende" },
     { "name": "Natascha Schuldt", "amt": "1. Stellvertreterin" },

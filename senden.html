@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nachricht senden – Schulverein Tespe</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1D7A67">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="app.css">
+<style>
+  .seite{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:18px;padding-block:8px 40px;}
+  .seite h1{font-size:24px;}
+  .feld{display:flex;flex-direction:column;gap:5px;}
+  .feld label{font-size:14px;font-weight:600;}
+  .feld small{font-size:12.5px;color:var(--ink-soft);}
+  input, textarea{
+    font:inherit;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%;
+  }
+  input:focus-visible, textarea:focus-visible{outline:2px solid var(--brand);outline-offset:1px;}
+  textarea{min-height:90px;resize:vertical;}
+  .voll{
+    font:inherit;font-weight:600;cursor:pointer;border:0;border-radius:10px;
+    background:var(--brand);color:var(--on-brand);padding:12px 16px;
+  }
+  .voll:disabled{opacity:.55;cursor:default;}
+  .meldung{border-radius:10px;padding:12px 14px;font-size:14.5px;}
+  .meldung.gut{background:var(--brand-soft);color:var(--brand);}
+  .meldung.schlecht{background:var(--sun-soft);color:var(--sun);}
+  .zeile{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .klein{font-size:13px;color:var(--ink-soft);}
+  .vorschau{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:12px 14px;display:flex;gap:10px;align-items:flex-start;
+  }
+  .vorschau img{width:34px;height:34px;border-radius:8px;}
+  .vorschau b{display:block;font-size:14.5px;}
+  .vorschau span{font-size:13.5px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+<div class="seite">
+
+  <p><a href="./" style="color:var(--brand)">&larr; Zurück zur App</a></p>
+  <h1>Nachricht an alle senden</h1>
+  <p class="klein">
+    Geht an alle, die in der App Benachrichtigungen eingeschaltet haben.
+    Bitte sparsam benutzen – wer zu oft Nachrichten bekommt, schaltet sie wieder aus.
+  </p>
+
+  <div class="feld">
+    <label for="passwort">Passwort</label>
+    <input id="passwort" type="password" autocomplete="current-password">
+  </div>
+
+  <div class="zeile">
+    <button class="voll" id="zaehlen" type="button" style="background:none;border:1.5px solid var(--brand);color:var(--brand)">Wie viele Empfänger?</button>
+    <span class="klein" id="anzahl"></span>
+  </div>
+
+  <div class="feld">
+    <label for="titel">Titel</label>
+    <input id="titel" maxlength="80" placeholder="Halloweenparty am Freitag">
+    <small>Das Fette in der Benachrichtigung. Höchstens 80 Zeichen.</small>
+  </div>
+
+  <div class="feld">
+    <label for="text">Text</label>
+    <textarea id="text" maxlength="300" placeholder="Wir starten um 18 Uhr in der Turnhalle. Kostüme nicht vergessen!"></textarea>
+    <small>Höchstens 300 Zeichen. Auf manchen Geräten wird nur die erste Zeile angezeigt.</small>
+  </div>
+
+  <div class="feld">
+    <label>Vorschau</label>
+    <div class="vorschau">
+      <img src="icon-192.png" alt="">
+      <div>
+        <b id="vTitel">Titel der Nachricht</b>
+        <span id="vText">Der Text erscheint hier.</span>
+      </div>
+    </div>
+  </div>
+
+  <button class="voll" id="senden" type="button">Jetzt senden</button>
+  <div class="meldung" id="meldung" hidden></div>
+
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  let dienst = '';
+
+  fetch('inhalte.json', { cache: 'no-cache' })
+    .then(r => r.json())
+    .then(d => { dienst = (d.push && d.push.dienst) || ''; if (!dienst) melde('Der Versanddienst ist in inhalte.json noch nicht eingetragen.', false); })
+    .catch(() => melde('inhalte.json konnte nicht geladen werden.', false));
+
+  function melde(text, gut) {
+    const m = $('meldung');
+    m.hidden = false;
+    m.textContent = text;
+    m.className = 'meldung ' + (gut ? 'gut' : 'schlecht');
+  }
+
+  $('titel').addEventListener('input', e => {
+    $('vTitel').textContent = e.target.value || 'Titel der Nachricht';
+  });
+  $('text').addEventListener('input', e => {
+    $('vText').textContent = e.target.value || 'Der Text erscheint hier.';
+  });
+
+  async function ruf(pfad, daten) {
+    const res = await fetch(dienst + pfad, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(daten)
+    });
+    return { status: res.status, daten: await res.json().catch(() => ({})) };
+  }
+
+  $('zaehlen').addEventListener('click', async () => {
+    if (!dienst) return;
+    $('anzahl').textContent = 'einen Moment …';
+    try {
+      const a = await ruf('/anzahl', { passwort: $('passwort').value });
+      if (a.status === 401) { $('anzahl').textContent = ''; melde('Das Passwort stimmt nicht.', false); return; }
+      $('anzahl').textContent = a.daten.anzahl + ' Empfänger';
+    } catch (e) {
+      $('anzahl').textContent = '';
+      melde('Der Versanddienst ist nicht erreichbar.', false);
+    }
+  });
+
+  $('senden').addEventListener('click', async () => {
+    if (!dienst) return;
+    const titel = $('titel').value.trim();
+    if (!titel) { melde('Bitte einen Titel eingeben.', false); return; }
+    if (!confirm('Nachricht jetzt an alle Empfänger senden?')) return;
+
+    $('senden').disabled = true;
+    $('senden').textContent = 'wird gesendet …';
+    try {
+      const a = await ruf('/senden', {
+        passwort: $('passwort').value,
+        titel,
+        text: $('text').value.trim()
+      });
+      if (a.status === 401) melde('Das Passwort stimmt nicht.', false);
+      else if (!a.daten.ok) melde('Fehler: ' + (a.daten.fehler || 'unbekannt'), false);
+      else melde(
+        `Gesendet an ${a.daten.zugestellt} von ${a.daten.empfaenger} Empfängern.` +
+        (a.daten.entfernt ? ` ${a.daten.entfernt} alte Anmeldungen wurden entfernt.` : '') +
+        (a.daten.fehler ? ` ${a.daten.fehler} konnten nicht zugestellt werden.` : ''), true);
+    } catch (e) {
+      melde('Der Versanddienst ist nicht erreichbar.', false);
+    }
+    $('senden').disabled = false;
+    $('senden').textContent = 'Jetzt senden';
+  });
+</script>
+</body>
+</html>

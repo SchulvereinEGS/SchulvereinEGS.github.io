@@ -138,6 +138,13 @@ function seiteMehr(d) {
     <div><p class="eyebrow">Service</p><h2>Mehr</h2></div>
     ${block(d.mehr.tshirt)}
     ${block(d.mehr.kontakt)}
+    <div class="panel" id="pushBox" hidden>
+      <div>
+        <p class="eyebrow">${t((d.push && d.push.titel) || 'Benachrichtigungen')}</p>
+        <p class="lead" style="margin-top:4px" data-status></p>
+      </div>
+      <button class="ghost" type="button">Benachrichtigungen einschalten</button>
+    </div>
     <div class="panel">
       <p class="eyebrow">Vorstand</p>
       <div class="vorstand">
@@ -156,6 +163,92 @@ const SEITEN = {
   start: seiteStart, mitglied: seiteMitglied, termine: seiteTermine,
   helfen: seiteHelfen, news: seiteNews, mehr: seiteMehr
 };
+
+/* ---------- Benachrichtigungen ---------- */
+
+function schluesselBytes(b64) {
+  const s = (b64 + '='.repeat((4 - b64.length % 4) % 4)).replace(/-/g, '+').replace(/_/g, '/');
+  const roh = atob(s);
+  const out = new Uint8Array(roh.length);
+  for (let i = 0; i < roh.length; i++) out[i] = roh.charCodeAt(i);
+  return out;
+}
+
+async function pushEinrichten(d) {
+  const kasten = document.getElementById('pushBox');
+  if (!kasten) return;
+
+  const cfg = d.push || {};
+  if (!cfg.dienst || !cfg.schluessel) return;          // noch nicht eingerichtet
+
+  const status = kasten.querySelector('[data-status]');
+  const knopf = kasten.querySelector('button');
+  kasten.hidden = false;
+
+  if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
+    knopf.hidden = true;
+    status.textContent = 'Dein Gerät kann keine Benachrichtigungen anzeigen. '
+      + 'Auf dem iPhone klappt es, sobald die App auf dem Startbildschirm liegt.';
+    return;
+  }
+
+  let reg, abo = null;
+  try {
+    reg = await navigator.serviceWorker.ready;
+    abo = await reg.pushManager.getSubscription();
+  } catch (e) {
+    knopf.hidden = true;
+    status.textContent = 'Benachrichtigungen stehen hier gerade nicht zur Verfügung.';
+    return;
+  }
+
+  function stand() {
+    if (abo) {
+      knopf.hidden = false;
+      knopf.textContent = 'Benachrichtigungen ausschalten';
+      status.textContent = 'Eingeschaltet. Ihr bekommt Nachrichten vom Schulverein.';
+    } else if (Notification.permission === 'denied') {
+      knopf.hidden = true;
+      status.textContent = 'Benachrichtigungen sind für diese Seite blockiert. '
+        + 'In den Einstellungen des Browsers könnt ihr sie wieder erlauben.';
+    } else {
+      knopf.hidden = false;
+      knopf.textContent = 'Benachrichtigungen einschalten';
+      status.textContent = cfg.text || '';
+    }
+  }
+  stand();
+
+  knopf.addEventListener('click', async () => {
+    knopf.disabled = true;
+    try {
+      if (abo) {
+        await fetch(cfg.dienst + '/abmelden', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ endpoint: abo.endpoint })
+        });
+        await abo.unsubscribe();
+        abo = null;
+      } else {
+        const erlaubnis = await Notification.requestPermission();
+        if (erlaubnis !== 'granted') { stand(); knopf.disabled = false; return; }
+        abo = await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: schluesselBytes(cfg.schluessel)
+        });
+        const res = await fetch(cfg.dienst + '/anmelden', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ abo: abo.toJSON() })
+        });
+        if (!res.ok) throw new Error('abgelehnt');
+      }
+      stand();
+    } catch (e) {
+      status.textContent = 'Das hat gerade nicht geklappt. Bitte später noch einmal versuchen.';
+    }
+    knopf.disabled = false;
+  });
+}
 
 function zeichne(d) {
   const wurzel = document.getElementById('app');
@@ -183,6 +276,7 @@ function zeichne(d) {
       tab.setAttribute('aria-selected', String(tab.dataset.go === aktiv)));
     try { localStorage.setItem('sv-seite', name); } catch (e) { /* egal */ }
     window.scrollTo({ top: 0, behavior: 'instant' });
+    if (name === 'mehr') pushEinrichten(d);
   }
 
   wurzel.addEventListener('click', ev => {
