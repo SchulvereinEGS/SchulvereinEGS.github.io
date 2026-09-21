@@ -151,7 +151,9 @@
       else melde(
         `Gesendet an ${a.daten.zugestellt} von ${a.daten.empfaenger} Empfängern.` +
         (a.daten.entfernt ? ` ${a.daten.entfernt} alte Anmeldungen wurden entfernt.` : '') +
-        (a.daten.fehler ? ` ${a.daten.fehler} konnten nicht zugestellt werden.` : ''), true);
+        (a.daten.fehler ? ` ${a.daten.fehler} konnten nicht zugestellt werden.` : '') +
+        (a.daten.details && a.daten.details.length ? ' Grund: ' + a.daten.details.join(' / ') : ''),
+        !a.daten.fehler);
     } catch (e) {
       melde('Der Versanddienst ist nicht erreichbar.', false);
     }
