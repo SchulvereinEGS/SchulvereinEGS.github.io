@@ -1,6 +1,6 @@
 /* Service Worker: macht die App startbereit, auch wenn das Netz mal weg ist.
    Beim Aenderen von Dateien die VERSION hochzaehlen, damit alle die neue Fassung bekommen. */
-const VERSION = 'schulverein-v5';
+const VERSION = 'schulverein-v6';
 const DATEIEN = ['./', 'index.html', 'app.css', 'app.js', 'inhalte.json', 'recht.html', 'logo.png', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', ev => {
@@ -19,6 +19,7 @@ self.addEventListener('activate', ev => {
    Klappt das nicht, kommt die gespeicherte Fassung. */
 self.addEventListener('fetch', ev => {
   if (ev.request.method !== 'GET') return;
+  if (ev.request.url.includes('/galerie/')) return;   // Fotos nicht zwischenspeichern
   ev.respondWith(
     fetch(ev.request)
       .then(antwort => {

@@ -186,5 +186,12 @@
       "name": "Katrin Uzatis",
       "amt": "Schriftführerin"
     }
-  ]
+  ],
+  "galerie": {
+    "_hinweis": "Fotos in den Ordner galerie hochladen. Jedes Album: titel, datum, bilder. Jedes Bild: datei (groß), klein (Vorschau), text. Nur Fotos ohne erkennbare Kinder!",
+    "titel": "Galerie",
+    "text": "Eindrücke von unseren Festen und Aktionen.",
+    "hinweis": "Wir zeigen nur Fotos, auf denen keine Kinder zu erkennen sind. Du entdeckst dich trotzdem auf einem Bild und möchtest das nicht? Schreib uns – wir nehmen es sofort heraus.",
+    "alben": []
+  }
 }

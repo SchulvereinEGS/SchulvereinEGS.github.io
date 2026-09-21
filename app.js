@@ -201,6 +201,7 @@ function seiteMehr(d) {
     <div><p class="eyebrow">Service</p><h2>Mehr</h2></div>
     ${block(d.mehr.tshirt)}
     ${block(d.mehr.kontakt)}
+    ${galerieKasten(d)}
     <div class="panel" id="pushBox" hidden>
       <div>
         <p class="eyebrow">${t((d.push && d.push.titel) || 'Benachrichtigungen')}</p>
@@ -223,6 +224,117 @@ function seiteMehr(d) {
     ${urheberZeile(d)}`;
 }
 
+/* ---------- Galerie ---------- */
+
+function galerieBilder(d) {
+  const g = d.galerie || {};
+  return (g.alben || []).reduce((n, a) => n + ((a.bilder || []).length), 0);
+}
+
+function galerieKasten(d) {
+  const g = d.galerie;
+  if (!g) return '';
+  const n = galerieBilder(d);
+  return `
+    <div class="panel">
+      <div>
+        <p class="eyebrow">${t(g.titel || 'Galerie')}</p>
+        <p class="lead" style="margin-top:4px">${t(g.text)}${n ? ` <strong>${n} ${n === 1 ? 'Foto' : 'Fotos'}</strong>` : ''}</p>
+      </div>
+      <button class="ghost" type="button" data-go="galerie">Galerie öffnen</button>
+    </div>`;
+}
+
+function seiteGalerie(d) {
+  const g = d.galerie || {};
+  const alben = (g.alben || []).filter(a => (a.bilder || []).length);
+  const inhalt = alben.length ? alben.map((a, ai) => `
+    <div class="panel">
+      <div>
+        ${a.datum ? `<p class="eyebrow">${t(a.datum)}</p>` : ''}
+        <h3>${t(a.titel)}</h3>
+        ${a.text ? `<p class="lead" style="margin-top:4px">${t(a.text)}</p>` : ''}
+      </div>
+      <div class="raster">
+        ${a.bilder.map((b, bi) => `
+          <button type="button" class="kachel" data-bild="${ai}:${bi}" aria-label="${t(b.text || a.titel)} – Foto ${bi + 1} vergrößern">
+            <img src="${t(b.klein || b.datei)}" alt="${t(b.text || '')}" loading="lazy" decoding="async" width="300" height="300">
+          </button>`).join('')}
+      </div>
+    </div>`).join('') : `
+    <div class="panel leer">
+      <p class="lead">Bald gibt es hier Fotos von unseren Festen und Aktionen.</p>
+    </div>`;
+  return `
+    <button class="zurueck" data-go="mehr">&larr; Mehr</button>
+    <div><p class="eyebrow">Eindrücke</p><h2>${t(g.titel || 'Galerie')}</h2></div>
+    ${g.text ? `<p class="lead">${t(g.text)}</p>` : ''}
+    ${inhalt}
+    ${g.hinweis ? `<p class="klein">${t(g.hinweis)}</p>` : ''}`;
+}
+
+function bildansichtEinrichten(d) {
+  const dlg = document.createElement('dialog');
+  dlg.className = 'bildansicht';
+  dlg.setAttribute('aria-label', 'Foto');
+  dlg.innerHTML = `
+    <figure>
+      <img alt="">
+      <figcaption><span data-text></span><span data-zahl></span></figcaption>
+    </figure>
+    <button type="button" class="ba-knopf ba-zu" data-ba="zu" aria-label="Schließen">&times;</button>
+    <button type="button" class="ba-knopf ba-zurueck" data-ba="-1" aria-label="Vorheriges Foto">&#8249;</button>
+    <button type="button" class="ba-knopf ba-weiter" data-ba="1" aria-label="Nächstes Foto">&#8250;</button>`;
+  document.body.appendChild(dlg);
+  const bild = dlg.querySelector('img');
+  let album = null, nr = 0;
+
+  function zeigeBild() {
+    const b = album.bilder[nr];
+    bild.src = b.datei;
+    bild.alt = b.text || album.titel || '';
+    dlg.querySelector('[data-text]').textContent = b.text || album.titel || '';
+    dlg.querySelector('[data-zahl]').textContent = `${nr + 1} / ${album.bilder.length}`;
+    const mehrere = album.bilder.length > 1;
+    dlg.querySelector('.ba-zurueck').hidden = !mehrere;
+    dlg.querySelector('.ba-weiter').hidden = !mehrere;
+  }
+  function blaettern(schritt) {
+    nr = (nr + schritt + album.bilder.length) % album.bilder.length;
+    zeigeBild();
+  }
+  function oeffnen(ai, bi) {
+    const alben = ((d.galerie || {}).alben || []).filter(a => (a.bilder || []).length);
+    album = alben[ai]; nr = bi;
+    if (!album) return;
+    zeigeBild();
+    if (typeof dlg.showModal === 'function') dlg.showModal(); else dlg.setAttribute('open', '');
+  }
+  function schliessen() {
+    if (typeof dlg.close === 'function') dlg.close(); else dlg.removeAttribute('open');
+    bild.removeAttribute('src');
+  }
+
+  dlg.addEventListener('click', ev => {
+    const k = ev.target.closest('[data-ba]');
+    if (k) { k.dataset.ba === 'zu' ? schliessen() : blaettern(Number(k.dataset.ba)); return; }
+    if (ev.target === dlg) schliessen();                 // Klick neben das Foto
+  });
+  dlg.addEventListener('keydown', ev => {
+    if (ev.key === 'ArrowLeft') blaettern(-1);
+    if (ev.key === 'ArrowRight') blaettern(1);
+  });
+  let x0 = null;
+  dlg.addEventListener('touchstart', ev => { x0 = ev.touches[0].clientX; }, { passive: true });
+  dlg.addEventListener('touchend', ev => {
+    if (x0 === null) return;
+    const dx = ev.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) blaettern(dx < 0 ? 1 : -1);
+    x0 = null;
+  });
+  return oeffnen;
+}
+
 function urheberZeile(d) {
   const v = d.verein;
   if (!v.urheber) return '';
@@ -232,7 +344,8 @@ function urheberZeile(d) {
 
 const SEITEN = {
   start: seiteStart, mitglied: seiteMitglied, termine: seiteTermine,
-  helfen: seiteHelfen, news: seiteNews, mehr: seiteMehr
+  helfen: seiteHelfen, news: seiteNews, mehr: seiteMehr,
+  galerie: seiteGalerie
 };
 
 /* ---------- Benachrichtigungen ---------- */
@@ -340,11 +453,12 @@ function zeichne(d) {
       : ''}</p>`;
 
   const screen = document.getElementById('screen');
+  const bildOeffnen = bildansichtEinrichten(d);
 
   function zeige(name) {
     if (!SEITEN[name]) name = 'start';
     screen.innerHTML = SEITEN[name](d);
-    const aktiv = (name === 'mitglied') ? 'start' : name;
+    const aktiv = (name === 'mitglied') ? 'start' : (name === 'galerie') ? 'mehr' : name;
     wurzel.querySelectorAll('.tab').forEach(tab =>
       tab.setAttribute('aria-selected', String(tab.dataset.go === aktiv)));
     try { localStorage.setItem('sv-seite', name); } catch (e) { /* egal */ }
@@ -367,6 +481,12 @@ function zeichne(d) {
       const alt = kopie.textContent;
       kopie.textContent = ok ? 'IBAN kopiert ✓' : 'Bitte von Hand markieren';
       setTimeout(() => { kopie.textContent = alt; }, 2000);
+      return;
+    }
+    const kachel = ev.target.closest('[data-bild]');
+    if (kachel) {
+      const [ai, bi] = kachel.dataset.bild.split(':').map(Number);
+      bildOeffnen(ai, bi);
       return;
     }
     const el = ev.target.closest('[data-go]');
