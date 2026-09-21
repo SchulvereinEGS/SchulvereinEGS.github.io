@@ -1,6 +1,5 @@
 {
   "_hinweis": "Diese Datei ist der Inhalt der App. Alles, was hier steht, erscheint in der App. Texte in Anfuehrungszeichen aendern, Kommas am Zeilenende stehen lassen.",
-
   "verein": {
     "name": "Schulverein der Elbe-Grundschule Tespe e.V.",
     "kurzname": "Schulverein Tespe",
@@ -13,9 +12,10 @@
     "gemeinnuetzig": "Gemeinnützig im Sinne der §§ 51 ff. AO – die Beiträge sind steuerlich abzugsfähig.",
     "satzung": "https://www.elbe-grundschule-tespe.de/schulverein/satzung/",
     "recht": "recht.html",
+    "urheber": "Natascha Schuldt",
+    "urheber_jahr": "2026",
     "datenschutz": "https://form.jotform.com/262582471942059"
   },
-
   "start": {
     "text": "Wir sind der Schulverein der Elbe-Grundschule Tespe – ein Vorstand aus fünf Müttern. Wir finanzieren, was der Schuletat nicht hergibt: Spielgeräte, Bücher, Projekttage, Feste und die kleinen Extras, über die sich Kinder am meisten freuen.",
     "beitrag": "Mitglied werden kostet 15,00 € im Jahr – für die ganze Familie.",
@@ -23,9 +23,21 @@
       "titel": "Halloweenparty – Freitag, 6. November",
       "text": "18 bis 22 Uhr. Für alle Kinder, Kostüme sehr erwünscht."
     },
-    "gesucht": "Helfer für Aufbau, Getränke, Buffet und Abbau · Kuchenspenden fürs Gruselbuffet"
+    "gesucht": "Kinderbasar am 28.11.: Helfer für Aufbau, Aufsicht, Kaffee & Kuchen und Kasse · Kleiderstangen zum Ausleihen · Brezeln und Kuchen",
+    "gesucht_link": "Alle Infos unter Helfen"
   },
-
+  "spenden": {
+    "_hinweis": "Solange iban leer ist, erscheint der Spendenkasten nicht in der App.",
+    "titel": "Direkt spenden",
+    "text": "Jeder Euro kommt ohne Umweg bei unseren Kindern an – für Spielgeräte, Bücher, Ausflüge und Feste. Schon kleine Beträge helfen.",
+    "kontoinhaber": "Schulverein der Elbe-Grundschule Tespe e.V.",
+    "iban": "",
+    "bic": "",
+    "bank": "",
+    "verwendungszweck": "Spende Schulverein",
+    "girocode": "girocode.png",
+    "hinweis": "Der Schulverein ist als gemeinnützig anerkannt – eure Spende ist steuerlich absetzbar. Eine Spendenbescheinigung bekommt ihr auf Nachfrage."
+  },
   "mitglied": {
     "text": "Der Beitrag liegt bei 15,00 € im Jahr und gilt für die ganze Familie. Der Verein ist gemeinnützig, die Beiträge sind steuerlich abzugsfähig, und jeder Euro bleibt an unserer Schule.",
     "punkte": [
@@ -38,7 +50,6 @@
     "knopf": "Beitrittsformular öffnen",
     "formular": "https://form.jotform.com/262562217627055"
   },
-
   "termine": [
     {
       "tag": "06",
@@ -57,7 +68,7 @@
       "titel": "Tespe Kinderbasar",
       "zeit": "10:00 bis 14:00 Uhr",
       "text": "Früheinlass für Schwangere und Eltern mit Babys ab 9:30 Uhr.",
-      "hinweis": "Anmeldeschluss für Verkäufer: 13. November.",
+      "hinweis": "Anmeldeschluss für Verkäufer: 13. November. Helfer gesucht – siehe Helfen.",
       "status": "Anmeldung offen",
       "knopf": "Als Verkäufer anmelden",
       "formular": "https://form.jotform.com/262562111123039"
@@ -74,7 +85,6 @@
       "formular": "https://form.jotform.com/262571588091061"
     }
   ],
-
   "helfen": {
     "text": "Ihr müsst kein Mitglied sein, um zu helfen. Trag dich ein, wähle aus, wobei du mit anpacken magst – wir melden uns rechtzeitig vor dem Termin.",
     "punkte": [
@@ -85,10 +95,56 @@
       "Öffentlichkeitsarbeit und Fotos"
     ],
     "knopf": "Helferformular öffnen",
-    "formular": "https://form.jotform.com/262572170350047"
+    "formular": "https://form.jotform.com/262572170350047",
+    "aufruf": {
+      "titel": "Tespe Kinderbasar – wir brauchen euch!",
+      "text": "Damit der Basar am Samstag, 28. November, gut läuft, suchen wir noch helfende Hände.",
+      "tage": [
+        {
+          "tag": "Freitag, 27.11.",
+          "zeit": "ab 16 Uhr",
+          "aufgaben": [
+            {
+              "was": "Aufbau",
+              "wer": "8–10 Personen"
+            }
+          ]
+        },
+        {
+          "tag": "Samstag, 28.11.",
+          "zeit": "ab 9 Uhr",
+          "aufgaben": [
+            {
+              "was": "Aufsicht",
+              "wer": "5–6 Personen"
+            },
+            {
+              "was": "Kaffee- und Kuchenverkauf",
+              "wer": "2–4 Personen"
+            },
+            {
+              "was": "Kasse",
+              "wer": "2–3 Personen"
+            }
+          ]
+        }
+      ],
+      "sachen_titel": "Außerdem gesucht",
+      "sachen": [
+        "Kleiderstangen als Leihgabe",
+        "Brezeln und Kuchen für auf die Hand – als Spende"
+      ],
+      "dank": "Kleines Dankeschön: Wer hilft, darf schon vor der Eröffnung stöbern – beim Aufbau am Freitagabend oder am Samstag vor dem Einlass.",
+      "knopf": "Ich helfe beim Basar",
+      "formular": "https://form.jotform.com/262572170350047"
+    }
   },
-
   "news": [
+    {
+      "datum": "21. September",
+      "titel": "Helfer für den Kinderbasar gesucht",
+      "text": "Für Freitag, 27.11., ab 16 Uhr suchen wir 8–10 Leute für den Aufbau. Am Samstag, 28.11., ab 9 Uhr brauchen wir 5–6 Aufsichten, 2–4 Leute für Kaffee und Kuchen und 2–3 für die Kasse. Dazu Kleiderstangen zum Ausleihen sowie Brezeln und Kuchen für auf die Hand. Helfer dürfen vorher schon stöbern!"
+    },
     {
       "datum": "18. September",
       "titel": "Die Schul-T-Shirts kommen in Doppelgrößen",
@@ -100,7 +156,6 @@
       "text": "Halloween, Kinderbasar, Kinoabend und die Beitrittserklärung – alles an einer Stelle, ohne Zettel im Ranzen."
     }
   ],
-
   "mehr": {
     "tshirt": {
       "titel": "Schul-T-Shirt bestellen",
@@ -115,7 +170,6 @@
       "formular": "https://form.jotform.com/262572099771064"
     }
   },
-
   "push": {
     "_hinweis": "dienst = Adresse des Versanddienstes bei Cloudflare. Solange sie leer ist, taucht der Abschnitt in der App nicht auf.",
     "dienst": "https://schulverein-push.schulverein.workers.dev",
@@ -123,12 +177,26 @@
     "titel": "Benachrichtigungen",
     "text": "Wir melden uns nur, wenn es etwas Wichtiges gibt – neue Termine, Anmeldeschluss, kurzfristige Änderungen. Höchstens ein paar Mal im Jahr."
   },
-
   "vorstand": [
-    { "name": "Vanessa Gehler", "amt": "1. Vorsitzende" },
-    { "name": "Natascha Schuldt", "amt": "1. Stellvertreterin" },
-    { "name": "Svenja Birr", "amt": "2. Stellvertreterin" },
-    { "name": "Tina Lassen", "amt": "Kassenwartin" },
-    { "name": "Katrin Uzatis", "amt": "Schriftführerin" }
+    {
+      "name": "Vanessa Gehler",
+      "amt": "1. Vorsitzende"
+    },
+    {
+      "name": "Natascha Schuldt",
+      "amt": "1. Stellvertreterin"
+    },
+    {
+      "name": "Svenja Birr",
+      "amt": "2. Stellvertreterin"
+    },
+    {
+      "name": "Tina Lassen",
+      "amt": "Kassenwartin"
+    },
+    {
+      "name": "Katrin Uzatis",
+      "amt": "Schriftführerin"
+    }
   ]
 }

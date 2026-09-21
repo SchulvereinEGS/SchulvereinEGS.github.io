@@ -67,7 +67,43 @@ function seiteStart(d) {
       <div>
         <p class="eyebrow">Aktuell gesucht</p>
         <p class="lead" style="margin-top:2px">${t(d.start.gesucht)}</p>
+        ${d.start.gesucht_link ? `<button class="zurueck" data-go="helfen" style="margin-top:6px">${t(d.start.gesucht_link)} &rarr;</button>` : ''}
       </div>
+    </div>
+    ${spendenKasten(d)}`;
+}
+
+function ibanLesbar(iban) {
+  return String(iban || '').replace(/\s+/g, '').replace(/(.{4})/g, '$1 ').trim();
+}
+
+function spendenKasten(d) {
+  const sp = d.spenden;
+  if (!sp || !sp.iban) return '';                       // ohne IBAN kein Kasten
+  const iban = String(sp.iban).replace(/\s+/g, '');
+  return `
+    <div class="panel spenden">
+      <div class="spenden-kopf">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.4-7-9.2A4 4 0 0 1 12 8a4 4 0 0 1 7 2.8C19 15.6 12 20 12 20Z"/></svg>
+        <div>
+          <p class="eyebrow">${t(sp.titel || 'Spenden')}</p>
+          <p class="lead" style="margin-top:2px">${t(sp.text)}</p>
+        </div>
+      </div>
+      <dl class="konto">
+        <div><dt>Empfänger</dt><dd>${t(sp.kontoinhaber)}</dd></div>
+        <div><dt>IBAN</dt><dd class="iban">${t(ibanLesbar(iban))}</dd></div>
+        ${sp.bic ? `<div><dt>BIC</dt><dd>${t(sp.bic)}</dd></div>` : ''}
+        ${sp.bank ? `<div><dt>Bank</dt><dd>${t(sp.bank)}</dd></div>` : ''}
+        <div><dt>Zweck</dt><dd>${t(sp.verwendungszweck)}</dd></div>
+      </dl>
+      <button class="ghost" type="button" data-kopieren="${t(iban)}">IBAN kopieren</button>
+      ${sp.girocode ? `
+        <div class="girocode">
+          <img src="${t(sp.girocode)}" alt="QR-Code für die Überweisung" width="140" height="140">
+          <p class="lead">Mit der Banking-App scannen – Empfänger, IBAN und Zweck sind dann schon ausgefüllt, ihr tragt nur noch den Betrag ein.</p>
+        </div>` : ''}
+      ${sp.hinweis ? `<p class="klein">${t(sp.hinweis)}</p>` : ''}
     </div>`;
 }
 
@@ -100,9 +136,36 @@ function seiteTermine(d) {
     <div class="panel">${eintraege}</div>`;
 }
 
+function aufrufKasten(a) {
+  if (!a || !a.titel) return '';
+  const tage = (a.tage || []).map(tg => `
+    <div class="aufruf-tag">
+      <p class="aufruf-wann"><b>${t(tg.tag)}</b>${tg.zeit ? ` &middot; ${t(tg.zeit)}` : ''}</p>
+      <ul class="aufgaben">${(tg.aufgaben || []).map(x =>
+        `<li><span>${t(x.was)}</span><span class="wer">${t(x.wer)}</span></li>`).join('')}</ul>
+    </div>`).join('');
+  return `
+    <div class="panel aufruf">
+      <div>
+        <p class="eyebrow">Aufruf</p>
+        <h3>${t(a.titel)}</h3>
+        ${a.text ? `<p class="lead" style="margin-top:4px">${t(a.text)}</p>` : ''}
+      </div>
+      ${tage}
+      ${a.sachen && a.sachen.length ? `
+        <div>
+          <p class="aufruf-wann"><b>${t(a.sachen_titel || 'Außerdem gesucht')}</b></p>
+          <ul class="liste">${a.sachen.map(p => `<li>${t(p)}</li>`).join('')}</ul>
+        </div>` : ''}
+      ${a.dank ? `<p class="dank">${t(a.dank)}</p>` : ''}
+      ${a.formular ? `<a class="voll-knopf" href="${t(a.formular)}" target="_blank" rel="noopener">${t(a.knopf || 'Ich helfe mit')}</a>` : ''}
+    </div>`;
+}
+
 function seiteHelfen(d) {
   return `
     <div><p class="eyebrow">Mitmachen</p><h2>Helfen &amp; Mitmachen</h2></div>
+    ${aufrufKasten(d.helfen.aufruf)}
     <p class="lead">${t(d.helfen.text)}</p>
     <div class="panel">
       <p class="eyebrow">Wobei es gerade klemmt</p>
@@ -156,7 +219,15 @@ function seiteMehr(d) {
       ${t(v.gemeinnuetzig)}<br>${t(v.register)}<br><br>
       <a href="${t(v.satzung)}" target="_blank" rel="noopener">Satzung</a> &middot;
       <a href="${t(v.recht || 'recht.html')}">Impressum &amp; Datenschutz</a>
-    </p>`;
+    </p>
+    ${urheberZeile(d)}`;
+}
+
+function urheberZeile(d) {
+  const v = d.verein;
+  if (!v.urheber) return '';
+  return `<p class="urheber">App entworfen von ${t(v.urheber)} &middot;
+    &copy; ${t(v.urheber_jahr || new Date().getFullYear())} ${t(v.urheber)}. Alle Rechte vorbehalten.</p>`;
 }
 
 const SEITEN = {
@@ -264,7 +335,9 @@ function zeichne(d) {
           </button>`).join('')}
       </nav>
     </div>
-    <p class="fuss">${t(d.verein.name)}</p>`;
+    <p class="fuss">${t(d.verein.name)}${d.verein.urheber
+      ? `<br>&copy; ${t(d.verein.urheber_jahr || new Date().getFullYear())} ${t(d.verein.urheber)} &middot; <a href="${t(d.verein.recht || 'recht.html')}#urheberrecht">Urheberrecht</a>`
+      : ''}</p>`;
 
   const screen = document.getElementById('screen');
 
@@ -279,7 +352,23 @@ function zeichne(d) {
     if (name === 'mehr') pushEinrichten(d);
   }
 
-  wurzel.addEventListener('click', ev => {
+  wurzel.addEventListener('click', async ev => {
+    const kopie = ev.target.closest('[data-kopieren]');
+    if (kopie) {
+      const text = kopie.dataset.kopieren;
+      let ok = false;
+      try { await navigator.clipboard.writeText(text); ok = true; } catch (e) { /* Fallback */ }
+      if (!ok) {
+        const feld = document.createElement('textarea');
+        feld.value = text; document.body.appendChild(feld); feld.select();
+        try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+        feld.remove();
+      }
+      const alt = kopie.textContent;
+      kopie.textContent = ok ? 'IBAN kopiert ✓' : 'Bitte von Hand markieren';
+      setTimeout(() => { kopie.textContent = alt; }, 2000);
+      return;
+    }
     const el = ev.target.closest('[data-go]');
     if (el) zeige(el.dataset.go);
   });
