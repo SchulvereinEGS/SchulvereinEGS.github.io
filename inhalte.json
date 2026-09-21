@@ -192,6 +192,185 @@
     "titel": "Galerie",
     "text": "Eindrücke von unseren Festen und Aktionen.",
     "hinweis": "Wir zeigen nur Fotos, auf denen keine Kinder zu erkennen sind. Du entdeckst dich trotzdem auf einem Bild und möchtest das nicht? Schreib uns – wir nehmen es sofort heraus.",
-    "alben": []
+    "alben": [
+      {
+        "titel": "Das sind wir",
+        "datum": "Der Vorstand",
+        "bilder": [
+          {
+            "datei": "galerie/das-sind-wir/01.jpg",
+            "klein": "galerie/das-sind-wir/klein/01.jpg",
+            "text": "Tina, Vanessa, Svenja, Natascha und Katrin"
+          },
+          {
+            "datei": "galerie/das-sind-wir/02.jpg",
+            "klein": "galerie/das-sind-wir/klein/02.jpg",
+            "text": "Der Vorstand des Schulvereins"
+          }
+        ]
+      },
+      {
+        "titel": "Einschulung 2026",
+        "datum": "August 2026",
+        "bilder": [
+          {
+            "datei": "galerie/einschulung-2026/01.jpg",
+            "klein": "galerie/einschulung-2026/klein/01.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/einschulung-2026/02.jpg",
+            "klein": "galerie/einschulung-2026/klein/02.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/einschulung-2026/03.jpg",
+            "klein": "galerie/einschulung-2026/klein/03.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/einschulung-2026/04.jpg",
+            "klein": "galerie/einschulung-2026/klein/04.jpg",
+            "text": "Mein 1. Schultag"
+          }
+        ]
+      },
+      {
+        "titel": "Kinoabend Sommer 2026",
+        "datum": "Juni 2026",
+        "bilder": [
+          {
+            "datei": "galerie/kinoabend-sommer-2026/01.jpg",
+            "klein": "galerie/kinoabend-sommer-2026/klein/01.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/kinoabend-sommer-2026/02.jpg",
+            "klein": "galerie/kinoabend-sommer-2026/klein/02.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/kinoabend-sommer-2026/03.jpg",
+            "klein": "galerie/kinoabend-sommer-2026/klein/03.jpg",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "titel": "Ostergeschenke 2026",
+        "datum": "März 2026",
+        "bilder": [
+          {
+            "datei": "galerie/ostergeschenke-2026/01.jpg",
+            "klein": "galerie/ostergeschenke-2026/klein/01.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/ostergeschenke-2026/02.jpg",
+            "klein": "galerie/ostergeschenke-2026/klein/02.jpg",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "titel": "Weihnachtskino 2025",
+        "datum": "Dezember 2025",
+        "bilder": [
+          {
+            "datei": "galerie/weihnachtskino-2025/01.jpg",
+            "klein": "galerie/weihnachtskino-2025/klein/01.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/weihnachtskino-2025/02.jpg",
+            "klein": "galerie/weihnachtskino-2025/klein/02.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/weihnachtskino-2025/03.jpg",
+            "klein": "galerie/weihnachtskino-2025/klein/03.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/weihnachtskino-2025/04.jpg",
+            "klein": "galerie/weihnachtskino-2025/klein/04.jpg",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "titel": "Weihnachtsgeschenke 2025",
+        "datum": "November 2025",
+        "bilder": [
+          {
+            "datei": "galerie/weihnachtsgeschenke-2025/01.jpg",
+            "klein": "galerie/weihnachtsgeschenke-2025/klein/01.jpg",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "titel": "Halloweenparty 2025",
+        "datum": "November 2025",
+        "bilder": [
+          {
+            "datei": "galerie/halloweenparty-2025/01.jpg",
+            "klein": "galerie/halloweenparty-2025/klein/01.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/halloweenparty-2025/02.jpg",
+            "klein": "galerie/halloweenparty-2025/klein/02.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/halloweenparty-2025/03.jpg",
+            "klein": "galerie/halloweenparty-2025/klein/03.jpg",
+            "text": "Mumien-Würstchen vom Buffet"
+          },
+          {
+            "datei": "galerie/halloweenparty-2025/04.jpg",
+            "klein": "galerie/halloweenparty-2025/klein/04.jpg",
+            "text": "Gruselige Schoko-Snacks"
+          },
+          {
+            "datei": "galerie/halloweenparty-2025/05.jpg",
+            "klein": "galerie/halloweenparty-2025/klein/05.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/halloweenparty-2025/06.jpg",
+            "klein": "galerie/halloweenparty-2025/klein/06.jpg",
+            "text": ""
+          }
+        ]
+      },
+      {
+        "titel": "Kinoabend Sommer 2025",
+        "datum": "Juni 2025",
+        "bilder": [
+          {
+            "datei": "galerie/kinoabend-sommer-2025/01.jpg",
+            "klein": "galerie/kinoabend-sommer-2025/klein/01.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/kinoabend-sommer-2025/02.jpg",
+            "klein": "galerie/kinoabend-sommer-2025/klein/02.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/kinoabend-sommer-2025/03.jpg",
+            "klein": "galerie/kinoabend-sommer-2025/klein/03.jpg",
+            "text": ""
+          },
+          {
+            "datei": "galerie/kinoabend-sommer-2025/04.jpg",
+            "klein": "galerie/kinoabend-sommer-2025/klein/04.jpg",
+            "text": "Popcorn für alle"
+          }
+        ]
+      }
+    ]
   }
 }
