@@ -26,18 +26,6 @@
     "gesucht": "Kinderbasar am 28.11.: Helfer für Aufbau, Aufsicht, Kaffee & Kuchen und Kasse · Kleiderstangen zum Ausleihen · Brezeln und Kuchen",
     "gesucht_link": "Alle Infos unter Helfen"
   },
-  "spenden": {
-    "_hinweis": "Solange iban leer ist, erscheint der Spendenkasten nicht in der App.",
-    "titel": "Direkt spenden",
-    "text": "Jeder Euro kommt ohne Umweg bei unseren Kindern an – für Spielgeräte, Bücher, Ausflüge und Feste. Schon kleine Beträge helfen.",
-    "kontoinhaber": "Schulverein der Elbe-Grundschule Tespe e.V.",
-    "iban": "",
-    "bic": "",
-    "bank": "",
-    "verwendungszweck": "Spende Schulverein",
-    "girocode": "girocode.png",
-    "hinweis": "Der Schulverein ist als gemeinnützig anerkannt – eure Spende ist steuerlich absetzbar. Eine Spendenbescheinigung bekommt ihr auf Nachfrage."
-  },
   "mitglied": {
     "text": "Der Beitrag liegt bei 15,00 € im Jahr und gilt für die ganze Familie. Der Verein ist gemeinnützig, die Beiträge sind steuerlich abzugsfähig, und jeder Euro bleibt an unserer Schule.",
     "punkte": [
