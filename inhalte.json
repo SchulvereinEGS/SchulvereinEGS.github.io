@@ -21,7 +21,7 @@
     "beitrag": "Mitglied werden kostet 15,00 € im Jahr – für die ganze Familie.",
     "naechster_termin": {
       "titel": "Halloweenparty – Freitag, 6. November",
-      "text": "18 bis 22 Uhr. Für alle Kinder, Kostüme sehr erwünscht."
+      "text": "18 bis 22 Uhr. Für alle Kinder, Kostüme sehr erwünscht – einfach vorbeikommen, keine Anmeldung nötig."
     },
     "gesucht": "Kinderbasar am 28.11.: Helfer für Aufbau, Aufsicht, Kaffee & Kuchen und Kasse · Kleiderstangen zum Ausleihen · Brezeln und Kuchen",
     "gesucht_link": "Alle Infos unter Helfen"
@@ -44,11 +44,11 @@
       "monat": "Nov",
       "titel": "Halloweenparty",
       "zeit": "18 bis 22 Uhr",
-      "text": "Für alle Kinder, Kostüme sehr erwünscht.",
-      "hinweis": "Bitte beachten: keine Vollmasken, keine Kostüme aus Horrorfilmen oder Serien. Die Aufsicht über die Kinder liegt bei den Eltern.",
-      "status": "Anmeldung offen",
-      "knopf": "Zur Anmeldung",
-      "formular": "https://form.jotform.com/262572074556058"
+      "text": "Für alle Kinder, Kostüme sehr erwünscht. Einfach vorbeikommen – keine Anmeldung nötig.",
+      "hinweis": "Bitte beachten: keine Vollmasken, keine Kostüme aus Horrorfilmen oder Serien. Die Aufsicht über die Kinder liegt bei den Eltern. Wir suchen noch Helfer für den Verkauf und Spenden: Kuchen, Muffins, Fingerfood, Süßes.",
+      "status": "Keine Anmeldung nötig",
+      "knopf": "Helfen oder etwas spenden",
+      "formular": "https://form.jotform.com/262572170350047"
     },
     {
       "tag": "28",
@@ -77,7 +77,7 @@
     "text": "Ihr müsst kein Mitglied sein, um zu helfen. Trag dich ein, wähle aus, wobei du mit anpacken magst – wir melden uns rechtzeitig vor dem Termin.",
     "punkte": [
       "Tespe Kinderbasar – Aufbau und Kasse",
-      "Halloweenparty – Getränke und Buffet",
+      "Halloweenparty – Verkauf, Kuchen- und Snackspenden",
       "Einschulung – Bewirtung der Familien",
       "Kuchen backen – immer und für alles",
       "Öffentlichkeitsarbeit und Fotos"
