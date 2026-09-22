@@ -66,7 +66,9 @@ function seiteStart(d) {
       </div>
       <div>
         <p class="eyebrow">Aktuell gesucht</p>
-        <p class="lead" style="margin-top:2px">${t(d.start.gesucht)}</p>
+        ${Array.isArray(d.start.gesucht)
+          ? `<ul class="gesucht">${d.start.gesucht.map(g => `<li><b>${t(g.titel)}</b>${g.text ? ` ${t(g.text)}` : ''}</li>`).join('')}</ul>`
+          : `<p class="lead" style="margin-top:2px">${t(d.start.gesucht)}</p>`}
         ${d.start.gesucht_link ? `<button class="zurueck" data-go="helfen" style="margin-top:6px">${t(d.start.gesucht_link)} &rarr;</button>` : ''}
       </div>
     </div>
@@ -167,10 +169,11 @@ function seiteHelfen(d) {
     <div><p class="eyebrow">Mitmachen</p><h2>Helfen &amp; Mitmachen</h2></div>
     ${aufrufKasten(d.helfen.aufruf)}
     <p class="lead">${t(d.helfen.text)}</p>
+    ${(d.helfen.punkte || []).length ? `
     <div class="panel">
-      <p class="eyebrow">Wobei es gerade klemmt</p>
+      <p class="eyebrow">${t(d.helfen.punkte_titel || 'Wobei es gerade klemmt')}</p>
       <ul class="liste">${d.helfen.punkte.map(p => `<li>${t(p)}</li>`).join('')}</ul>
-    </div>
+    </div>` : ''}
     ${knopf(d.helfen.knopf, d.helfen.formular)}`;
 }
 
