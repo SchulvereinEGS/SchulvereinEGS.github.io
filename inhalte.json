@@ -87,48 +87,84 @@
     "punkte": [],
     "knopf": "Helferformular öffnen",
     "formular": "https://form.jotform.com/262572170350047",
-    "aufruf": {
-      "titel": "Tespe Kinderbasar – wir brauchen euch!",
-      "text": "Damit der Basar am Samstag, 28. November, gut läuft, suchen wir noch helfende Hände.",
-      "tage": [
-        {
-          "tag": "Freitag, 27.11.",
-          "zeit": "ab 16 Uhr",
-          "aufgaben": [
-            {
-              "was": "Aufbau",
-              "wer": "8–10 Personen"
-            }
-          ]
-        },
-        {
-          "tag": "Samstag, 28.11.",
-          "zeit": "ab 9 Uhr",
-          "aufgaben": [
-            {
-              "was": "Aufsicht",
-              "wer": "5–6 Personen"
-            },
-            {
-              "was": "Kaffee- und Kuchenverkauf",
-              "wer": "2–4 Personen"
-            },
-            {
-              "was": "Kasse",
-              "wer": "2–3 Personen"
-            }
-          ]
-        }
-      ],
-      "sachen_titel": "Außerdem gesucht",
-      "sachen": [
-        "Kleiderstangen als Leihgabe",
-        "Brezeln und Kuchen für auf die Hand – als Spende"
-      ],
-      "dank": "Kleines Dankeschön: Wer hilft, darf schon vor der Eröffnung stöbern – beim Aufbau am Freitagabend oder am Samstag vor dem Einlass.",
-      "knopf": "Ich helfe beim Basar",
-      "formular": "https://form.jotform.com/262572170350047"
-    }
+    "aufruf": [
+      {
+        "titel": "Halloweenparty – wir brauchen euch!",
+        "text": "Am Freitag, 6. November, feiern wir von 18 bis 22 Uhr. Damit alles klappt, suchen wir noch helfende Hände.",
+        "tage": [
+          {
+            "tag": "Freitag, 6.11.",
+            "zeit": "18 bis 22 Uhr",
+            "aufgaben": [
+              {
+                "was": "Verkauf von Getränken und Snacks",
+                "wer": ""
+              }
+            ]
+          },
+          {
+            "tag": "Freitag, 6.11.",
+            "zeit": "ab 22 Uhr",
+            "aufgaben": [
+              {
+                "was": "Abbau nach der Party",
+                "wer": ""
+              }
+            ]
+          }
+        ],
+        "sachen_titel": "Für das Gruselbuffet gesucht",
+        "sachen": [
+          "Kuchen, Muffins oder Fingerfood",
+          "Süßigkeiten oder Knabberzeug"
+        ],
+        "dank": "",
+        "knopf": "Ich helfe bei Halloween",
+        "formular": "https://form.jotform.com/262572170350047"
+      },
+      {
+        "titel": "Tespe Kinderbasar – wir brauchen euch!",
+        "text": "Damit der Basar am Samstag, 28. November, gut läuft, suchen wir noch helfende Hände.",
+        "tage": [
+          {
+            "tag": "Freitag, 27.11.",
+            "zeit": "ab 16 Uhr",
+            "aufgaben": [
+              {
+                "was": "Aufbau",
+                "wer": "8–10 Personen"
+              }
+            ]
+          },
+          {
+            "tag": "Samstag, 28.11.",
+            "zeit": "ab 9 Uhr",
+            "aufgaben": [
+              {
+                "was": "Aufsicht",
+                "wer": "5–6 Personen"
+              },
+              {
+                "was": "Kaffee- und Kuchenverkauf",
+                "wer": "2–4 Personen"
+              },
+              {
+                "was": "Kasse",
+                "wer": "2–3 Personen"
+              }
+            ]
+          }
+        ],
+        "sachen_titel": "Außerdem gesucht",
+        "sachen": [
+          "Kleiderstangen als Leihgabe",
+          "Brezeln und Kuchen für auf die Hand – als Spende"
+        ],
+        "dank": "Kleines Dankeschön: Wer hilft, darf schon vor der Eröffnung stöbern – beim Aufbau am Freitagabend oder am Samstag vor dem Einlass.",
+        "knopf": "Ich helfe beim Basar",
+        "formular": "https://form.jotform.com/262572170350047"
+      }
+    ]
   },
   "news": [
     {

@@ -144,7 +144,7 @@ function aufrufKasten(a) {
     <div class="aufruf-tag">
       <p class="aufruf-wann"><b>${t(tg.tag)}</b>${tg.zeit ? ` &middot; ${t(tg.zeit)}` : ''}</p>
       <ul class="aufgaben">${(tg.aufgaben || []).map(x =>
-        `<li><span>${t(x.was)}</span><span class="wer">${t(x.wer)}</span></li>`).join('')}</ul>
+        `<li><span>${t(x.was)}</span>${x.wer ? `<span class="wer">${t(x.wer)}</span>` : ''}</li>`).join('')}</ul>
     </div>`).join('');
   return `
     <div class="panel aufruf">
@@ -167,7 +167,7 @@ function aufrufKasten(a) {
 function seiteHelfen(d) {
   return `
     <div><p class="eyebrow">Mitmachen</p><h2>Helfen &amp; Mitmachen</h2></div>
-    ${aufrufKasten(d.helfen.aufruf)}
+    ${[].concat(d.helfen.aufruf || []).map(aufrufKasten).join('')}
     <p class="lead">${t(d.helfen.text)}</p>
     ${(d.helfen.punkte || []).length ? `
     <div class="panel">
