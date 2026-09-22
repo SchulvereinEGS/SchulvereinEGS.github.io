@@ -501,11 +501,22 @@ function zeichne(d) {
   zeige(start);
 }
 
+let geladenerText = '';
+
+// Bleibt das App-Fenster offen (z. B. am PC), beim Zurückholen prüfen, ob es neue Inhalte gibt
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState !== 'visible' || !geladenerText) return;
+  try {
+    const r = await fetch('inhalte.json', { cache: 'no-cache' });
+    if (r.ok && (await r.text()) !== geladenerText) location.reload();
+  } catch (e) { /* offline – egal */ }
+});
+
 async function starten() {
   let daten = window.INHALTE || null;
   try {
     const antwort = await fetch('inhalte.json', { cache: 'no-cache' });
-    if (antwort.ok) daten = await antwort.json();
+    if (antwort.ok) { geladenerText = await antwort.text(); daten = JSON.parse(geladenerText); }
   } catch (e) { /* dann bleibt es bei den eingebauten Inhalten */ }
 
   if (!daten) {
@@ -519,7 +530,23 @@ async function starten() {
 starten();
 
 if ('serviceWorker' in navigator) {
+  // Neue Fassung erkannt -> App einmal neu laden, damit sie sofort angezeigt wird
+  const hatteSteuerung = !!navigator.serviceWorker.controller;
+  let neuGeladen = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hatteSteuerung || neuGeladen) return;
+    neuGeladen = true;
+    location.reload();
+  });
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(() => { /* ohne Offline-Modus weiter */ });
+    navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+      .then(reg => {
+        reg.update().catch(() => {});
+        // Wenn die App lange offen bleibt (Desktop-Fenster): beim Zurückholen nach Updates schauen
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update().catch(() => {});
+        });
+      })
+      .catch(() => { /* ohne Offline-Modus weiter */ });
   });
 }
