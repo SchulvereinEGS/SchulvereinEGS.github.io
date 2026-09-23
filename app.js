@@ -205,6 +205,7 @@ function seiteMehr(d) {
     ${block(d.mehr.tshirt)}
     ${block(d.mehr.kontakt)}
     ${galerieKasten(d)}
+    ${anleitungKasten(d)}
     <div class="panel" id="pushBox" hidden>
       <div>
         <p class="eyebrow">${t((d.push && d.push.titel) || 'Benachrichtigungen')}</p>
@@ -225,6 +226,38 @@ function seiteMehr(d) {
       <a href="${t(v.recht || 'recht.html')}">Impressum &amp; Datenschutz</a>
     </p>
     ${urheberZeile(d)}`;
+}
+
+/* ---------- Anleitung ---------- */
+
+function anleitungKasten(d) {
+  const a = d.anleitung;
+  if (!a) return '';
+  return `
+    <div class="panel">
+      <div>
+        <p class="eyebrow">${t(a.titel || 'Anleitung')}</p>
+        <p class="lead" style="margin-top:4px">${t(a.text)}</p>
+      </div>
+      <button class="ghost" type="button" data-go="anleitung">Anleitung öffnen</button>
+    </div>`;
+}
+
+function seiteAnleitung(d) {
+  const a = d.anleitung || {};
+  return `
+    <button class="zurueck" data-go="mehr">&larr; Mehr</button>
+    <div><p class="eyebrow">Für Eltern</p><h2>${t(a.titel || 'So funktioniert die App')}</h2></div>
+    ${a.text ? `<p class="lead">${t(a.text)}</p>` : ''}
+    ${(a.abschnitte || []).map(ab => `
+      <div class="panel">
+        <div>
+          <p class="eyebrow">${t(ab.titel)}</p>
+          ${ab.text ? `<p class="lead" style="margin-top:4px">${t(ab.text)}</p>` : ''}
+        </div>
+        ${(ab.punkte || []).length ? `<ul class="liste">${ab.punkte.map(p => `<li>${t(p)}</li>`).join('')}</ul>` : ''}
+      </div>`).join('')}
+    ${a.schluss ? `<p class="klein">${t(a.schluss)}</p>` : ''}`;
 }
 
 /* ---------- Galerie ---------- */
@@ -348,7 +381,7 @@ function urheberZeile(d) {
 const SEITEN = {
   start: seiteStart, mitglied: seiteMitglied, termine: seiteTermine,
   helfen: seiteHelfen, news: seiteNews, mehr: seiteMehr,
-  galerie: seiteGalerie
+  galerie: seiteGalerie, anleitung: seiteAnleitung
 };
 
 /* ---------- Benachrichtigungen ---------- */
@@ -461,10 +494,9 @@ function zeichne(d) {
   function zeige(name) {
     if (!SEITEN[name]) name = 'start';
     screen.innerHTML = SEITEN[name](d);
-    const aktiv = (name === 'mitglied') ? 'start' : (name === 'galerie') ? 'mehr' : name;
+    const aktiv = (name === 'mitglied') ? 'start' : (name === 'galerie' || name === 'anleitung') ? 'mehr' : name;
     wurzel.querySelectorAll('.tab').forEach(tab =>
       tab.setAttribute('aria-selected', String(tab.dataset.go === aktiv)));
-    try { localStorage.setItem('sv-seite', name); } catch (e) { /* egal */ }
     window.scrollTo({ top: 0, behavior: 'instant' });
     if (name === 'mehr') pushEinrichten(d);
   }
@@ -496,9 +528,7 @@ function zeichne(d) {
     if (el) zeige(el.dataset.go);
   });
 
-  let start = 'start';
-  try { start = localStorage.getItem('sv-seite') || 'start'; } catch (e) { /* egal */ }
-  zeige(start);
+  zeige('start');            // die App beginnt immer auf der Startseite
 }
 
 let geladenerText = '';

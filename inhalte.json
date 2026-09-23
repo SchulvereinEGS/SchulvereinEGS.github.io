@@ -21,7 +21,7 @@
     "beitrag": "Mitglied werden kostet 15,00 € im Jahr – für die ganze Familie.",
     "naechster_termin": {
       "titel": "Halloweenparty – Freitag, 6. November",
-      "text": "18 bis 22 Uhr. Für alle Kinder, Kostüme sehr erwünscht – einfach vorbeikommen, keine Anmeldung nötig."
+      "text": "18 bis 21 Uhr. Für alle Kinder, Kostüme sehr erwünscht – einfach vorbeikommen, keine Anmeldung nötig."
     },
     "gesucht": [
       {
@@ -52,7 +52,7 @@
       "tag": "06",
       "monat": "Nov",
       "titel": "Halloweenparty",
-      "zeit": "18 bis 22 Uhr",
+      "zeit": "18 bis 21 Uhr",
       "text": "Für alle Kinder, Kostüme sehr erwünscht. Einfach vorbeikommen – keine Anmeldung nötig.",
       "hinweis": "Bitte beachten: keine Vollmasken, keine Kostüme aus Horrorfilmen oder Serien. Die Aufsicht über die Kinder liegt bei den Eltern. Wir suchen noch Helfer für den Verkauf und den Abbau sowie Kuchen- und Snackspenden für das Gruselbuffet.",
       "status": "Keine Anmeldung nötig",
@@ -90,11 +90,11 @@
     "aufruf": [
       {
         "titel": "Halloweenparty – wir brauchen euch!",
-        "text": "Am Freitag, 6. November, feiern wir von 18 bis 22 Uhr. Damit alles klappt, suchen wir noch helfende Hände.",
+        "text": "Am Freitag, 6. November, feiern wir von 18 bis 21 Uhr. Damit alles klappt, suchen wir noch helfende Hände.",
         "tage": [
           {
             "tag": "Freitag, 6.11.",
-            "zeit": "18 bis 22 Uhr",
+            "zeit": "18 bis 21 Uhr",
             "aufgaben": [
               {
                 "was": "Verkauf von Getränken und Snacks",
@@ -104,7 +104,7 @@
           },
           {
             "tag": "Freitag, 6.11.",
-            "zeit": "ab 22 Uhr",
+            "zeit": "ab 21 Uhr",
             "aufgaben": [
               {
                 "was": "Abbau nach der Party",
@@ -411,5 +411,53 @@
         ]
       }
     ]
+  },
+  "anleitung": {
+    "titel": "So funktioniert die App",
+    "text": "Alles vom Schulverein an einer Stelle: Termine, Anmeldungen, Helferlisten und Fotos. Ihr braucht keinen Zugang und kein Passwort.",
+    "abschnitte": [
+      {
+        "titel": "App aufs Handy holen",
+        "text": "Die App liegt im Internet, es gibt sie nicht im Play Store oder App Store. Legt euch stattdessen ein Symbol auf den Startbildschirm:",
+        "punkte": [
+          "Android: schulvereinegs.github.io in Chrome öffnen, oben rechts auf die drei Punkte tippen, dann „Zum Startbildschirm hinzufügen“.",
+          "iPhone und iPad: die Seite in Safari öffnen, unten auf das Teilen-Symbol tippen, dann „Zum Home-Bildschirm“.",
+          "Am Computer: die Seite in Chrome oder Edge öffnen und in der Adresszeile rechts auf „App installieren“ klicken."
+        ]
+      },
+      {
+        "titel": "Was ihr in der App findet",
+        "punkte": [
+          "Termine: alle Feste und Aktionen mit Uhrzeit und Anmeldung.",
+          "Mitglied werden: Beitritt für 15 € im Jahr, für die ganze Familie.",
+          "Helfen: wo gerade Hände, Kuchen oder Leihgaben gebraucht werden.",
+          "Neuigkeiten: kurze Meldungen aus dem Verein.",
+          "Mehr: T-Shirt-Bestellung, Kontakt, Galerie, Vorstand, Impressum und Datenschutz."
+        ]
+      },
+      {
+        "titel": "Anmeldungen",
+        "text": "Die Knöpfe öffnen ein Formular. Ihr füllt es aus, schickt es ab, fertig. Eine Bestätigung kommt per E-Mail. Für Rückfragen genügt eine Nachricht über „Kontakt & Ideen“."
+      },
+      {
+        "titel": "Benachrichtigungen einschalten",
+        "text": "Wir melden uns nur bei Wichtigem, höchstens ein paar Mal im Jahr.",
+        "punkte": [
+          "In der App auf „Mehr“ tippen und dann bei „Benachrichtigungen“ auf den Knopf.",
+          "Auf dem iPhone klappt das nur, wenn die App vorher auf dem Home-Bildschirm liegt.",
+          "Ausschalten geht jederzeit an derselben Stelle."
+        ]
+      },
+      {
+        "titel": "Gut zu wissen",
+        "punkte": [
+          "Die App aktualisiert sich von selbst, ihr müsst nichts nachinstallieren.",
+          "Sie sammelt keine Daten von euch: keine Cookies, keine Statistik, keine Werbung.",
+          "Daten gebt ihr nur in den Formularen an, und nur für den jeweiligen Zweck.",
+          "In der Galerie zeigen wir keine Fotos, auf denen Kinder zu erkennen sind."
+        ]
+      }
+    ],
+    "schluss": "Fragen oder etwas klappt nicht? Schreibt uns über „Mehr“ und dann „Kontakt & Ideen“ oder an schulverein@elbe-grundschule-tespe.de."
   }
 }
