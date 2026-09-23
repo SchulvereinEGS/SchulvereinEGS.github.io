@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mitgliederverwaltung – Schulverein Tespe</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1D7A67">
+<link rel="icon" href="icon-192.png">
+<link rel="stylesheet" href="app.css">
+<style>
+  body{padding-inline:12px;}
+  .seite{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:14px;padding-block:8px 40px;}
+  h1{font-size:24px;}
+  .reihe{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  input,select,textarea{font:inherit;color:var(--ink);background:var(--surface);
+    border:1px solid var(--line);border-radius:10px;padding:9px 11px;}
+  input:focus-visible,select:focus-visible{outline:2px solid var(--brand);outline-offset:1px;}
+  .voll{font:inherit;font-weight:600;cursor:pointer;border:0;border-radius:10px;
+    background:var(--brand);color:var(--on-brand);padding:10px 15px;}
+  .voll.grau{background:none;border:1.5px solid var(--brand);color:var(--brand);}
+  .voll:disabled{opacity:.5;cursor:default;}
+  .meldung{border-radius:10px;padding:10px 13px;font-size:14.5px;}
+  .gut{background:var(--brand-soft);color:var(--brand);}
+  .schlecht{background:var(--sun-soft);color:var(--sun);}
+  table{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface);}
+  th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top;}
+  th{position:sticky;top:0;background:var(--surface-2);cursor:pointer;white-space:nowrap;}
+  th span{color:var(--brand);}
+  td[contenteditable]{min-width:70px;}
+  td[contenteditable]:focus{outline:2px solid var(--brand);border-radius:4px;}
+  .tabelle{overflow:auto;max-height:70vh;border:1px solid var(--line);border-radius:12px;}
+  .status-Aktiv{color:var(--brand);font-weight:600;}
+  .status-Ausgetreten{color:var(--ink-soft);}
+  .status-Förderer{color:var(--sun);font-weight:600;}
+  .status-Prüfen{color:#b3261e;font-weight:600;}
+  .zahlen{font-size:14px;color:var(--ink-soft);}
+  .hinweis{max-width:none;}
+</style>
+</head>
+<body>
+<div class="seite">
+
+  <p><a href="./" style="color:var(--brand)">&larr; Zurück zur App</a></p>
+  <h1>Mitgliederverwaltung</h1>
+  <p class="hinweis">Diese Seite ist nur für den Vorstand. Die Daten liegen beim Versanddienst
+    des Vereins und sind nur mit Passwort abrufbar. Bitte nicht auf fremden Geräten anmelden.</p>
+
+  <div class="reihe">
+    <input id="passwort" type="password" placeholder="Passwort" autocomplete="current-password" style="min-width:180px">
+    <button class="voll" id="laden" type="button">Laden</button>
+    <button class="voll grau" id="speichern" type="button" disabled>Speichern</button>
+    <button class="voll grau" id="csv" type="button" disabled>Als CSV herunterladen</button>
+    <label class="voll grau" style="display:inline-block" for="datei">Liste einlesen</label>
+    <input id="datei" type="file" accept=".json,.csv" hidden>
+  </div>
+  <div class="meldung" id="meldung" hidden></div>
+
+  <div class="reihe">
+    <input id="suche" placeholder="Suche: Name, Nummer, Kind, E-Mail …" style="flex:1;min-width:220px">
+    <select id="status">
+      <option value="">Status: alle</option>
+      <option>Aktiv</option>
+      <option>Austritt zum Schuljahresende</option>
+      <option>Ausgetreten</option>
+      <option>Förderer</option>
+      <option>Prüfen</option>
+    </select>
+    <select id="klasse"><option value="">Klasse: alle</option></select>
+    <button class="voll grau" id="neu" type="button">Neues Mitglied</button>
+  </div>
+  <p class="zahlen" id="zahlen"></p>
+
+  <div class="tabelle"><table id="tab"><thead></thead><tbody></tbody></table></div>
+
+  <p class="zahlen">Zum Ändern in eine Zelle klicken. Klasse, Austritt und Status rechnen sich
+    aus Einschulungsjahr und Zug. Änderungen werden erst mit <b>Speichern</b> übernommen.</p>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const SPALTEN = [
+  ['nummer','Nummer'], ['art','Art'], ['vorname','Vorname'], ['nachname','Nachname'],
+  ['kind_vorname','Kind'], ['kind_nachname','Kind Nachname'],
+  ['einschulung','Einschulung'], ['zug','Zug'], ['klasse_manuell','Klasse man.'],
+  ['klasse','Klasse'], ['austritt','Austritt'], ['status','Status'],
+  ['verbleib','Bleibt Förderer'],
+  ['email','E-Mail'], ['telefon','Telefon'], ['anschrift','Anschrift'],
+  ['elternteil','Weiteres Elternteil'],
+  ['geschwisterkind','Geschw.'], ['name_geschwister','Name Geschw.'],
+  ['eintritt','Eintritt'], ['zahlungsweise','Zahlung'], ['iban','IBAN'], ['bic','BIC'],
+  ['bemerkung','Bemerkung']
+];
+const BERECHNET = ['klasse','austritt','status'];
+let dienst = '', daten = [], sortSpalte = 'nummer', sortAuf = true;
+
+fetch('inhalte.json', { cache: 'no-cache' }).then(r => r.json())
+  .then(d => { dienst = (d.push && d.push.dienst) || ''; })
+  .catch(() => melde('inhalte.json konnte nicht geladen werden.', false));
+
+function melde(text, gut) {
+  const m = $('meldung'); m.hidden = false; m.textContent = text;
+  m.className = 'meldung ' + (gut ? 'gut' : 'schlecht');
+}
+
+/* ---------- Rechnen wie in der Excel-Tabelle ---------- */
+function startjahr() {
+  const h = new Date();
+  return h.getMonth() + 1 >= 8 ? h.getFullYear() : h.getFullYear() - 1;
+}
+function rechne(m) {
+  const sj = startjahr();
+  const manuell = parseInt(m.klasse_manuell, 10);
+  const jahr = parseInt(m.einschulung, 10);
+  if (m.art === 'Förderer') {
+    m.klasse = '–'; m.austritt = '';
+    m.status = m.verbleib === 'Ja' ? 'Förderer' : 'Förderer';
+    return m;
+  }
+  if (!jahr && !manuell) { m.klasse = ''; m.austritt = ''; m.status = 'Prüfen'; return m; }
+  const stufe = manuell ? manuell : sj - jahr + 1;
+  const austrittsjahr = (manuell ? sj - manuell + 1 : jahr) + 4;
+  m.klasse = (stufe > 4 || stufe < 1) ? '–' : stufe + (m.zug || '');
+  m.austritt = '31.07.' + austrittsjahr;
+  m.status = austrittsjahr <= sj ? (m.verbleib === 'Ja' ? 'Förderer' : 'Ausgetreten')
+           : austrittsjahr === sj + 1 ? 'Austritt zum Schuljahresende' : 'Aktiv';
+  return m;
+}
+
+/* ---------- Tabelle ---------- */
+function zeichne() {
+  const q = $('suche').value.trim().toLowerCase();
+  const st = $('status').value, kl = $('klasse').value;
+  daten.forEach(rechne);
+
+  const klassen = [...new Set(daten.map(m => m.klasse).filter(Boolean))].sort();
+  const aktuell = $('klasse').value;
+  $('klasse').innerHTML = '<option value="">Klasse: alle</option>' +
+    klassen.map(k => `<option${k === aktuell ? ' selected' : ''}>${k}</option>`).join('');
+
+  let liste = daten.filter(m => {
+    if (st && m.status !== st) return false;
+    if (kl && m.klasse !== kl) return false;
+    if (!q) return true;
+    return SPALTEN.some(([s]) => String(m[s] || '').toLowerCase().includes(q));
+  });
+  liste.sort((a, b) => {
+    const x = String(a[sortSpalte] || ''), y = String(b[sortSpalte] || '');
+    return (sortAuf ? 1 : -1) * x.localeCompare(y, 'de', { numeric: true });
+  });
+
+  $('tab').tHead.innerHTML = '<tr>' + SPALTEN.map(([s, t]) =>
+    `<th data-s="${s}">${t}${sortSpalte === s ? ` <span>${sortAuf ? '▲' : '▼'}</span>` : ''}</th>`).join('') + '</tr>';
+  $('tab').tBodies[0].innerHTML = liste.map(m => '<tr>' + SPALTEN.map(([s]) => {
+    const wert = m[s] == null ? '' : String(m[s]);
+    if (BERECHNET.includes(s)) {
+      const kl2 = s === 'status' ? ' class="status-' + wert.split(' ')[0] + '"' : '';
+      return `<td${kl2}>${wert}</td>`;
+    }
+    return `<td contenteditable data-id="${m._id}" data-s="${s}">${wert}</td>`;
+  }).join('') + '</tr>').join('');
+
+  const z = {};
+  daten.forEach(m => { z[m.status] = (z[m.status] || 0) + 1; });
+  $('zahlen').textContent = `${liste.length} von ${daten.length} Zeilen angezeigt · ` +
+    Object.entries(z).map(([k, v]) => `${k}: ${v}`).join(' · ');
+}
+
+$('tab').addEventListener('click', e => {
+  const th = e.target.closest('th'); if (!th) return;
+  const s = th.dataset.s;
+  if (sortSpalte === s) sortAuf = !sortAuf; else { sortSpalte = s; sortAuf = true; }
+  zeichne();
+});
+$('tab').addEventListener('input', e => {
+  const td = e.target.closest('td[contenteditable]'); if (!td) return;
+  const m = daten.find(x => x._id === td.dataset.id);
+  if (m) m[td.dataset.s] = td.textContent.trim();
+});
+$('tab').addEventListener('focusout', e => {
+  if (e.target.closest('td[contenteditable]')) zeichne();
+});
+['suche', 'status', 'klasse'].forEach(id => $(id).addEventListener('input', zeichne));
+
+/* ---------- Versanddienst ---------- */
+async function ruf(pfad, extra) {
+  const r = await fetch(dienst + pfad, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(Object.assign({ passwort: $('passwort').value }, extra || {}))
+  });
+  return { status: r.status, daten: await r.json().catch(() => ({})) };
+}
+
+$('laden').addEventListener('click', async () => {
+  if (!dienst) return melde('Der Versanddienst ist nicht eingetragen.', false);
+  melde('einen Moment …', true);
+  try {
+    const a = await ruf('/mitglieder/laden');
+    if (a.status === 401) return melde('Das Passwort stimmt nicht.', false);
+    daten = (a.daten.mitglieder || []).map((m, i) => Object.assign({ _id: 'z' + i }, m));
+    $('speichern').disabled = false; $('csv').disabled = false;
+    melde(`${daten.length} Mitglieder geladen${a.daten.stand ? ' · Stand ' + new Date(a.daten.stand).toLocaleString('de-DE') : ''}.`, true);
+    zeichne();
+  } catch (e) { melde('Der Versanddienst ist nicht erreichbar.', false); }
+});
+
+$('speichern').addEventListener('click', async () => {
+  if (!confirm(`${daten.length} Mitglieder speichern?`)) return;
+  $('speichern').disabled = true;
+  try {
+    const rein = daten.map(m => { const k = Object.assign({}, m); delete k._id; return k; });
+    const a = await ruf('/mitglieder/speichern', { mitglieder: rein });
+    if (a.status === 401) melde('Das Passwort stimmt nicht.', false);
+    else if (!a.daten.ok) melde('Fehler: ' + (a.daten.fehler || 'unbekannt'), false);
+    else melde(`Gespeichert: ${a.daten.anzahl} Mitglieder.`, true);
+  } catch (e) { melde('Der Versanddienst ist nicht erreichbar.', false); }
+  $('speichern').disabled = false;
+});
+
+$('neu').addEventListener('click', () => {
+  daten.unshift({ _id: 'n' + Date.now(), nummer: '', art: 'Elternmitglied', vorname: '', nachname: '',
+    kind_vorname: '', kind_nachname: '', einschulung: '', zug: '', eintritt: '', zahlungsweise: 'Lastschrift' });
+  $('speichern').disabled = false;
+  zeichne();
+});
+
+/* ---------- Import einer Liste (JSON oder CSV mit Semikolon) ---------- */
+$('datei').addEventListener('change', async ev => {
+  const f = ev.target.files[0]; if (!f) return;
+  const text = await f.text();
+  try {
+    let liste;
+    if (f.name.toLowerCase().endsWith('.json')) {
+      const j = JSON.parse(text);
+      liste = Array.isArray(j) ? j : (j.mitglieder || []);
+    } else {
+      const zeilen = text.split(/\r?\n/).filter(Boolean);
+      const kopf = zeilen.shift().split(';').map(s => s.trim());
+      liste = zeilen.map(z => {
+        const teile = z.split(';'); const o = {};
+        kopf.forEach((k, i) => o[k] = (teile[i] || '').trim());
+        return o;
+      });
+    }
+    daten = liste.map((m, i) => Object.assign({ _id: 'i' + i }, m));
+    $('speichern').disabled = false; $('csv').disabled = false;
+    melde(`${daten.length} Zeilen eingelesen. Bitte prüfen und dann auf Speichern klicken.`, true);
+    zeichne();
+  } catch (e) { melde('Die Datei konnte nicht gelesen werden: ' + e.message, false); }
+  ev.target.value = '';
+});
+
+/* ---------- CSV-Ausgabe ---------- */
+$('csv').addEventListener('click', () => {
+  const sp = SPALTEN.map(([s]) => s);
+  const zeilen = [sp.join(';')].concat(daten.map(m =>
+    sp.map(s => String(m[s] == null ? '' : m[s]).replace(/;/g, ',')).join(';')));
+  const blob = new Blob(['﻿' + zeilen.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'Mitglieder_' + new Date().toISOString().slice(0, 10) + '.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+</script>
+</body>
+</html>
