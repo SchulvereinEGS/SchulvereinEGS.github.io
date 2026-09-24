@@ -35,6 +35,13 @@
   .status-Förderer{color:var(--sun);font-weight:600;}
   .status-Prüfen{color:#b3261e;font-weight:600;}
   .zahlen{font-size:14px;color:var(--ink-soft);}
+  .eingang{border:1.5px solid var(--brand);border-radius:12px;padding:12px 14px;margin-bottom:10px;
+    background:var(--surface);}
+  .eingang h3{font-size:16px;margin:0 0 6px;color:var(--brand);}
+  .eingang dl{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;margin:0 0 10px;font-size:14px;}
+  .eingang dt{color:var(--ink-soft);}
+  .eingang dd{margin:0;}
+  .eingang .reihe input,.eingang .reihe select{padding:6px 9px;font-size:14px;}
   .hinweis{max-width:none;}
 </style>
 </head>
@@ -55,6 +62,13 @@
     <input id="datei" type="file" accept=".json,.csv" hidden>
   </div>
   <div class="meldung" id="meldung" hidden></div>
+
+  <div id="posteingang" hidden>
+    <h2 style="font-size:19px;margin:6px 0 2px">Neue Beitritte <span id="anzahl_neu"></span></h2>
+    <p class="zahlen" style="margin-top:0">Kommen automatisch aus dem Formular „Mitglied werden“.
+      Ergänze Mitgliedsnummer, Art, Einschulungsjahr und Zug und klicke auf „Übernehmen“.</p>
+    <div id="eingaenge"></div>
+  </div>
 
   <div class="reihe">
     <input id="suche" placeholder="Suche: Name, Nummer, Kind, E-Mail …" style="flex:1;min-width:220px">
@@ -80,6 +94,9 @@
 
 <script>
 const $ = id => document.getElementById(id);
+/* macht Text für HTML sicher */
+const t = w => String(w == null ? '' : w)
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const SPALTEN = [
   ['nummer','Nummer'], ['art','Art'], ['vorname','Vorname'], ['nachname','Nachname'],
   ['kind_vorname','Kind'], ['kind_nachname','Kind Nachname'],
@@ -93,7 +110,7 @@ const SPALTEN = [
   ['bemerkung','Bemerkung']
 ];
 const BERECHNET = ['klasse','austritt','status'];
-let dienst = '', daten = [], sortSpalte = 'nummer', sortAuf = true;
+let dienst = '', daten = [], eingaenge = [], sortSpalte = 'nummer', sortAuf = true;
 
 fetch('inhalte.json', { cache: 'no-cache' }).then(r => r.json())
   .then(d => { dienst = (d.push && d.push.dienst) || ''; })
@@ -202,6 +219,12 @@ $('laden').addEventListener('click', async () => {
     $('speichern').disabled = false; $('csv').disabled = false;
     melde(`${daten.length} Mitglieder geladen${a.daten.stand ? ' · Stand ' + new Date(a.daten.stand).toLocaleString('de-DE') : ''}.`, true);
     zeichne();
+    try {
+      const b = await ruf('/beitritte/laden');
+      eingaenge = b.daten.beitritte || [];
+      zeichneEingaenge();
+      if (eingaenge.length) melde(`${daten.length} Mitglieder geladen · ${eingaenge.length} neue${eingaenge.length === 1 ? 'r Beitritt wartet' : ' Beitritte warten'} oben im Posteingang.`, true);
+    } catch (e) { /* Posteingang ist optional */ }
   } catch (e) { melde('Der Versanddienst ist nicht erreichbar.', false); }
 });
 
@@ -224,6 +247,133 @@ $('neu').addEventListener('click', () => {
   $('speichern').disabled = false;
   zeichne();
 });
+
+/* ---------- Posteingang: Beitritte aus dem Formular ---------- */
+const FELD = {
+  'Vorname': 'vorname', 'Nachname': 'nachname',
+  'E-Mail-Adresse': 'email', 'Telefonnummer': 'telefon',
+  'Vorname des Kindes': 'kind_vorname', 'Nachname des Kindes': 'kind_nachname',
+  'Einschulungsjahr': 'einschulung', 'Zug': 'zug', 'IBAN': 'iban', 'BIC': 'bic'
+};
+
+function schuljahr() { const j = startjahr(); return j + '/' + String(j + 1).slice(2); }
+
+function ausFormular(e) {
+  const f = {};
+  (e.felder || []).forEach(x => f[x.titel] = String(x.wert || '').trim());
+  const m = {};
+  Object.keys(FELD).forEach(t => { if (f[t]) m[FELD[t]] = f[t]; });
+  const anschrift = [f['Straße und Hausnummer'], [f['PLZ'], f['Ort']].filter(Boolean).join(' ')]
+    .filter(Boolean).join(', ');
+  if (anschrift) m.anschrift = anschrift;
+  m.art = /Förder/i.test(f['Ich trete bei als'] || '') ? 'Förderer' : 'Elternmitglied';
+  if (!m.einschulung && f['Klasse']) m.klasse_manuell = f['Klasse'];
+  m.geschwisterkind = /^Ja/i.test(f['Habt ihr ein Geschwisterkind an der Schule?'] || '') ? 'Ja' : 'Nein';
+  m.name_geschwister = f['Wenn ja: Vor- und Nachname des Geschwisterkindes'] || '';
+  m.eintritt = schuljahr();
+  m.zahlungsweise = 'Lastschrift';
+  m.bemerkung = ['Beitrag: ' + (f['Mitgliedsbeitrag'] || '–'),
+    f['Falls freiwilliger Förderbeitrag: gewünschter Jahresbetrag in Euro']
+      ? 'Förderbetrag ' + f['Falls freiwilliger Förderbeitrag: gewünschter Jahresbetrag in Euro'] + ' €' : '',
+    f['Bank'] ? 'Bank ' + f['Bank'] : '',
+    f['Kontoinhaber, falls abweichend'] ? 'Kontoinhaber ' + f['Kontoinhaber, falls abweichend'] : '',
+    'Antrag ' + new Date(e.eingang).toLocaleDateString('de-DE')].filter(Boolean).join(' · ');
+  m._klasse_geschwister = f['Wenn ja: Klasse'] || '';
+  return m;
+}
+
+function zeichneEingaenge() {
+  const kasten = $('posteingang');
+  kasten.hidden = !eingaenge.length;
+  $('anzahl_neu').textContent = eingaenge.length ? '(' + eingaenge.length + ')' : '';
+  $('eingaenge').innerHTML = eingaenge.map((e, i) => {
+    const m = ausFormular(e);
+    const zeilen = [
+      ['Name', [m.vorname, m.nachname].filter(Boolean).join(' ')],
+      ['Kind', [m.kind_vorname, m.kind_nachname].filter(Boolean).join(' ')],
+      ['Anschrift', m.anschrift], ['E-Mail', m.email], ['Telefon', m.telefon],
+      ['IBAN', m.iban], ['Geschwisterkind', m.geschwisterkind === 'Ja'
+        ? (m.name_geschwister || 'ja') + (m._klasse_geschwister ? ', Klasse ' + m._klasse_geschwister : '') : 'nein'],
+      ['Eingang', new Date(e.eingang).toLocaleString('de-DE')],
+      ['Hinweis', m.bemerkung]
+    ].filter(z => z[1]);
+    const gesch = m.geschwisterkind === 'Ja' && m.name_geschwister;
+    return `<div class="eingang">
+      <h3>${t([m.vorname, m.nachname].filter(Boolean).join(' ') || 'Neuer Beitritt')}</h3>
+      <dl>${zeilen.map(z => `<dt>${t(z[0])}</dt><dd>${t(z[1])}</dd>`).join('')}</dl>
+      <div class="reihe">
+        <input data-f="nummer" data-i="${i}" placeholder="Mitgliedsnummer" style="width:150px">
+        <select data-f="art" data-i="${i}">
+          <option${m.art === 'Elternmitglied' ? ' selected' : ''}>Elternmitglied</option>
+          <option${m.art === 'Förderer' ? ' selected' : ''}>Förderer</option>
+          <option>Geschwisterkind</option>
+        </select>
+        <input data-f="einschulung" data-i="${i}" value="${t(m.einschulung || '')}" placeholder="Einschulungsjahr" style="width:140px">
+        <input data-f="zug" data-i="${i}" value="${t(m.zug || '')}" placeholder="Zug" style="width:60px">
+        ${gesch ? `<label style="font-size:14px"><input type="checkbox" data-f="zweite" data-i="${i}" checked> zweite Zeile für ${t(m.name_geschwister)}</label>` : ''}
+        <button class="voll" type="button" data-nimm="${i}">Übernehmen</button>
+        <button class="voll grau" type="button" data-weg="${i}">Verwerfen</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  $('eingaenge').querySelectorAll('[data-nimm]').forEach(b =>
+    b.addEventListener('click', () => uebernimm(+b.dataset.nimm)));
+  $('eingaenge').querySelectorAll('[data-weg]').forEach(b =>
+    b.addEventListener('click', () => verwirf(+b.dataset.weg)));
+}
+
+function eingabe(i, feld) {
+  const el = $('eingaenge').querySelector(`[data-f="${feld}"][data-i="${i}"]`);
+  if (!el) return '';
+  return el.type === 'checkbox' ? el.checked : el.value.trim();
+}
+
+function uebernimm(i) {
+  const e = eingaenge[i];
+  const m = ausFormular(e);
+  const nummer = eingabe(i, 'nummer');
+  if (!nummer && !confirm('Ohne Mitgliedsnummer übernehmen?')) return;
+  const basis = {
+    nummer, art: eingabe(i, 'art'),
+    vorname: m.vorname || '', nachname: m.nachname || '',
+    kind_vorname: m.kind_vorname || '', kind_nachname: m.kind_nachname || '',
+    einschulung: eingabe(i, 'einschulung'), zug: eingabe(i, 'zug'),
+    klasse_manuell: m.klasse_manuell || '', verbleib: '',
+    email: m.email || '', telefon: m.telefon || '', anschrift: m.anschrift || '',
+    elternteil: '', geschwisterkind: m.geschwisterkind, name_geschwister: m.name_geschwister,
+    eintritt: m.eintritt, zahlungsweise: m.zahlungsweise,
+    iban: m.iban || '', bic: m.bic || '', bemerkung: m.bemerkung
+  };
+  const neu = [Object.assign({ _id: 'b' + Date.now() }, basis)];
+
+  if (eingabe(i, 'zweite') === true) {
+    const teile = (m.name_geschwister || '').split(' ').filter(Boolean);
+    const kl = (m._klasse_geschwister || '').match(/^(\d)\s*([abc])?/i);
+    neu.push(Object.assign({ _id: 'b' + (Date.now() + 1) }, basis, {
+      art: 'Geschwisterkind',
+      kind_vorname: teile[0] || '', kind_nachname: teile.slice(1).join(' ') || basis.nachname,
+      einschulung: '', klasse_manuell: kl ? kl[1] : '', zug: kl && kl[2] ? kl[2].toLowerCase() : '',
+      geschwisterkind: 'Ja',
+      name_geschwister: [basis.kind_vorname, basis.kind_nachname].filter(Boolean).join(' ')
+    }));
+  }
+
+  daten.unshift(...neu);
+  eingaenge.splice(i, 1);
+  $('speichern').disabled = false; $('csv').disabled = false;
+  ruf('/beitritte/erledigt', { ids: [e.id] }).catch(() => {});
+  melde(`${neu.length === 2 ? 'Zwei Zeilen' : 'Eine Zeile'} angelegt. Bitte prüfen und auf Speichern klicken.`, true);
+  zeichneEingaenge(); zeichne();
+}
+
+function verwirf(i) {
+  const e = eingaenge[i];
+  if (!confirm('Diesen Beitritt aus dem Posteingang entfernen? Die Mail bleibt erhalten.')) return;
+  eingaenge.splice(i, 1);
+  ruf('/beitritte/erledigt', { ids: [e.id] }).catch(() => {});
+  zeichneEingaenge();
+}
 
 /* ---------- Import einer Liste (JSON oder CSV mit Semikolon) ---------- */
 $('datei').addEventListener('change', async ev => {
