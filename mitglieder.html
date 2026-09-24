@@ -269,7 +269,9 @@ function ausFormular(e) {
   m.art = /Förder/i.test(f['Ich trete bei als'] || '') ? 'Förderer' : 'Elternmitglied';
   if (!m.einschulung && f['Klasse']) m.klasse_manuell = f['Klasse'];
   m.geschwisterkind = /^Ja/i.test(f['Habt ihr ein Geschwisterkind an der Schule?'] || '') ? 'Ja' : 'Nein';
-  m.name_geschwister = f['Wenn ja: Vor- und Nachname des Geschwisterkindes'] || '';
+  m.name_geschwister = [f['Wenn ja: Vorname des Geschwisterkindes'],
+    f['Wenn ja: Nachname des Geschwisterkindes']].filter(Boolean).join(' ')
+    || f['Wenn ja: Vor- und Nachname des Geschwisterkindes'] || '';   // alte Fassung
   m.eintritt = schuljahr();
   m.zahlungsweise = 'Lastschrift';
   m.bemerkung = ['Beitrag: ' + (f['Mitgliedsbeitrag'] || '–'),
@@ -279,6 +281,8 @@ function ausFormular(e) {
     f['Kontoinhaber, falls abweichend'] ? 'Kontoinhaber ' + f['Kontoinhaber, falls abweichend'] : '',
     'Antrag ' + new Date(e.eingang).toLocaleDateString('de-DE')].filter(Boolean).join(' · ');
   m._klasse_geschwister = f['Wenn ja: Klasse'] || '';
+  m._gesch_vorname = f['Wenn ja: Vorname des Geschwisterkindes'] || '';
+  m._gesch_nachname = f['Wenn ja: Nachname des Geschwisterkindes'] || '';
   return m;
 }
 
@@ -352,7 +356,8 @@ function uebernimm(i) {
     const kl = (m._klasse_geschwister || '').match(/^(\d)\s*([abc])?/i);
     neu.push(Object.assign({ _id: 'b' + (Date.now() + 1) }, basis, {
       art: 'Geschwisterkind',
-      kind_vorname: teile[0] || '', kind_nachname: teile.slice(1).join(' ') || basis.nachname,
+      kind_vorname: m._gesch_vorname || teile[0] || '',
+      kind_nachname: m._gesch_nachname || teile.slice(1).join(' ') || basis.nachname,
       einschulung: '', klasse_manuell: kl ? kl[1] : '', zug: kl && kl[2] ? kl[2].toLowerCase() : '',
       geschwisterkind: 'Ja',
       name_geschwister: [basis.kind_vorname, basis.kind_nachname].filter(Boolean).join(' ')
