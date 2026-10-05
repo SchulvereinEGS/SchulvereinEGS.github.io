@@ -394,6 +394,97 @@ function schluesselBytes(b64) {
   return out;
 }
 
+/* Meldet das Gerät für Benachrichtigungen an. Gibt true zurück, wenn es geklappt hat. */
+async function pushAnmelden(cfg) {
+  const reg = await navigator.serviceWorker.ready;
+  const erlaubnis = await Notification.requestPermission();
+  if (erlaubnis !== 'granted') return false;
+  const abo = await reg.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: schluesselBytes(cfg.schluessel)
+  });
+  const res = await fetch(cfg.dienst + '/anmelden', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ abo: abo.toJSON() })
+  });
+  if (!res.ok) throw new Error('abgelehnt');
+  return true;
+}
+
+/* Sanfter Hinweis unten: einmal pro Sitzung, nur wenn es wirklich etwas zu tun gibt. */
+let hinweisGezeigt = false;
+
+async function pushHinweis(d) {
+  if (hinweisGezeigt) return;
+  const cfg = d.push || {};
+  if (!cfg.dienst || !cfg.schluessel) return;
+  if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) return;
+  if (Notification.permission !== 'default') return;        // schon erlaubt oder blockiert
+
+  // iPhone: Benachrichtigungen gehen nur, wenn die App auf dem Startbildschirm liegt
+  const installiert = window.matchMedia('(display-mode: standalone)').matches
+    || window.navigator.standalone === true;
+  const apfel = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  if (apfel && !installiert) return;
+
+  let reg;
+  try {
+    reg = await navigator.serviceWorker.ready;
+    if (await reg.pushManager.getSubscription()) return;     // schon angemeldet
+  } catch (e) { return; }
+
+  hinweisGezeigt = true;
+
+  const box = document.createElement('div');
+  box.className = 'pushhinweis';
+  box.setAttribute('role', 'dialog');
+  box.setAttribute('aria-label', 'Benachrichtigungen einschalten');
+  box.innerHTML = `
+    <div class="ph-text">
+      <b>Nichts mehr verpassen?</b>
+      <span>Wir melden uns nur, wenn wirklich etwas ansteht – höchstens ein paar Mal im Jahr.
+        Ausschalten geht jederzeit unter „Mehr“.</span>
+      <span class="ph-stand" hidden></span>
+    </div>
+    <div class="ph-knoepfe">
+      <button type="button" class="ph-ja">Benachrichtigungen einschalten</button>
+      <button type="button" class="ph-nein">Später</button>
+    </div>`;
+  document.body.appendChild(box);
+  requestAnimationFrame(() => box.classList.add('da'));
+
+  const zu = () => {
+    box.classList.remove('da');
+    setTimeout(() => box.remove(), 300);
+  };
+  box.querySelector('.ph-nein').addEventListener('click', zu);
+
+  box.querySelector('.ph-ja').addEventListener('click', async ev => {
+    const knopf = ev.currentTarget;
+    const stand = box.querySelector('.ph-stand');
+    knopf.disabled = true;
+    try {
+      const ok = await pushAnmelden(cfg);
+      if (ok) {
+        stand.hidden = false;
+        stand.textContent = 'Eingeschaltet. Vielen Dank!';
+        setTimeout(zu, 1800);
+        const mehrKasten = document.getElementById('pushBox');
+        if (mehrKasten) pushEinrichten(d);
+      } else {
+        stand.hidden = false;
+        stand.textContent = 'Kein Problem – unter „Mehr“ geht es jederzeit.';
+        setTimeout(zu, 2600);
+      }
+    } catch (e) {
+      stand.hidden = false;
+      stand.textContent = 'Das hat gerade nicht geklappt. Bitte später unter „Mehr“ versuchen.';
+      knopf.disabled = false;
+    }
+  });
+}
+
 async function pushEinrichten(d) {
   const kasten = document.getElementById('pushBox');
   if (!kasten) return;
@@ -529,6 +620,9 @@ function zeichne(d) {
   });
 
   zeige('start');            // die App beginnt immer auf der Startseite
+
+  // Nach kurzer Zeit einmal fragen, ob wir uns melden dürfen
+  setTimeout(() => pushHinweis(d), 7000);
 }
 
 let geladenerText = '';
