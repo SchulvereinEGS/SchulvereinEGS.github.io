@@ -20,17 +20,13 @@
     "text": "Wir sind der Schulverein der Elbe-Grundschule Tespe – ein Vorstand aus fünf Müttern. Wir finanzieren, was der Schuletat nicht hergibt: Spielgeräte, Bücher, Projekttage, Feste und die kleinen Extras, über die sich Kinder am meisten freuen.",
     "beitrag": "Mitglied werden kostet 15,00 € im Jahr – für die ganze Familie.",
     "naechster_termin": {
-      "titel": "Halloweenparty – Freitag, 6. November",
-      "text": "18 bis 21 Uhr. Für alle Kinder, Kostüme sehr erwünscht – einfach vorbeikommen, keine Anmeldung nötig."
+      "titel": "Tespe Kinderbasar – Samstag, 28. November",
+      "text": "10 bis 14 Uhr in der Elbe-Grundschule Tespe. Früheinlass ab 9:30 Uhr für Schwangere und Eltern mit Tragebabys. Kaffee, Kuchen und Brezeln gibt es im Basar-Café."
     },
     "gesucht": [
       {
-        "titel": "Halloweenparty am 6. November:",
-        "text": "Helfer für den Verkauf und den Abbau – dazu Kuchen- und Snackspenden für das Gruselbuffet."
-      },
-      {
-        "titel": "Danach Kinderbasar am 28. November:",
-        "text": "Helfer für Aufbau, Aufsicht, Kaffee & Kuchen und Kasse · Kleiderstangen zum Ausleihen · Brezeln und Kuchen."
+        "titel": "Kinderbasar am Samstag, 28. November – wir brauchen noch Helfer:",
+        "text": "Aufsicht ab 9:30 Uhr, Kaffee & Kuchen, Kasse und ab 14 Uhr Abbau · Kuchen, Muffins und Brezeln fürs Basar-Café · Kleiderstangen zum Ausleihen. Auch eine Stunde hilft – und wer hilft, darf vor der Eröffnung stöbern."
       }
     ],
     "gesucht_link": "Alle Infos unter Helfen"
@@ -49,32 +45,21 @@
   },
   "termine": [
     {
-      "tag": "06",
-      "monat": "Nov",
-      "titel": "Halloweenparty",
-      "zeit": "18 bis 21 Uhr",
-      "text": "Für alle Kinder, Kostüme sehr erwünscht. Einfach vorbeikommen – keine Anmeldung nötig.",
-      "hinweis": "Bitte beachten: keine Vollmasken, keine Kostüme aus Horrorfilmen oder Serien. Die Aufsicht über die Kinder liegt bei den Eltern. Wir suchen noch Helfer für den Verkauf und den Abbau sowie Kuchen- und Snackspenden für das Gruselbuffet.",
-      "status": "Keine Anmeldung nötig",
-      "knopf": "Helfen oder etwas spenden",
-      "formular": "https://tally.so/r/Ek9WXN"
-    },
-    {
       "tag": "28",
       "monat": "Nov",
       "titel": "Tespe Kinderbasar",
       "zeit": "10:00 bis 14:00 Uhr",
-      "text": "Früheinlass für Schwangere und Eltern mit Babys ab 9:30 Uhr.",
-      "hinweis": "Anmeldeschluss für Verkäufer: 13. November. Die Nummern werden in der Reihenfolge der Anmeldungen vergeben, ihre Anzahl ist begrenzt – eure Nummer bekommt ihr spätestens am 14. November von uns. Helfer gesucht – siehe Helfen.",
-      "status": "Anmeldung offen",
-      "knopf": "Als Verkäufer anmelden",
+      "text": "Früheinlass ab 9:30 Uhr für Schwangere und Eltern mit Tragebabys (max. 1 Begleitperson), ab 10 Uhr für alle.",
+      "hinweis": "Die Verkäuferanmeldung ist abgeschlossen. Für Samstag suchen wir aber noch Helfer: Aufsicht ab 9:30 Uhr, Café, Kasse und Abbau ab 14 Uhr – dazu Kuchenspenden und Kleiderstangen. Im Formular oben „Ich möchte helfen“ wählen.",
+      "status": "Helfer gesucht",
+      "knopf": "Als Helfer eintragen",
       "formular": "https://tally.so/r/PdKO6b"
     },
     {
       "tag": "18",
       "monat": "Dez",
       "titel": "Kinoabend",
-      "zeit": "",
+      "zeit": "Einlass 17:30 Uhr, Film ab 18 Uhr",
       "text": "Nur für Vereinsmitglieder.",
       "hinweis": "Popcorn, Nachos und Getränke gibt es für kleines Geld – bitte etwas Kleingeld mitgeben.",
       "status": "Nur für Mitglieder",
@@ -89,56 +74,12 @@
     "formular": "https://tally.so/r/Ek9WXN",
     "aufruf": [
       {
-        "titel": "Halloweenparty – wir brauchen euch!",
-        "text": "Am Freitag, 6. November, feiern wir von 18 bis 21 Uhr. Damit alles klappt, suchen wir noch helfende Hände.",
-        "tage": [
-          {
-            "tag": "Freitag, 6.11.",
-            "zeit": "18 bis 21 Uhr",
-            "aufgaben": [
-              {
-                "was": "Verkauf von Getränken und Snacks",
-                "wer": ""
-              }
-            ]
-          },
-          {
-            "tag": "Freitag, 6.11.",
-            "zeit": "ab 21 Uhr",
-            "aufgaben": [
-              {
-                "was": "Abbau nach der Party",
-                "wer": ""
-              }
-            ]
-          }
-        ],
-        "sachen_titel": "Für das Gruselbuffet gesucht",
-        "sachen": [
-          "Kuchen, Muffins oder Fingerfood",
-          "Süßigkeiten oder Knabberzeug"
-        ],
-        "dank": "",
-        "knopf": "Ich helfe bei Halloween",
-        "formular": "https://tally.so/r/Ek9WXN"
-      },
-      {
         "titel": "Tespe Kinderbasar – wir brauchen euch!",
-        "text": "Damit der Basar am Samstag, 28. November, gut läuft, suchen wir noch helfende Hände.",
+        "text": "Am Samstag, 28. November, ist es so weit – für den Basartag suchen wir noch helfende Hände. Auch eine Stunde hilft!",
         "tage": [
-          {
-            "tag": "Freitag, 27.11.",
-            "zeit": "ab 16 Uhr",
-            "aufgaben": [
-              {
-                "was": "Aufbau",
-                "wer": "8–10 Personen"
-              }
-            ]
-          },
           {
             "tag": "Samstag, 28.11.",
-            "zeit": "ab 9 Uhr",
+            "zeit": "ab 9:30 Uhr",
             "aufgaben": [
               {
                 "was": "Aufsicht",
@@ -153,14 +94,24 @@
                 "wer": "2–3 Personen"
               }
             ]
+          },
+          {
+            "tag": "Samstag, 28.11.",
+            "zeit": "ab 14 Uhr",
+            "aufgaben": [
+              {
+                "was": "Abbau",
+                "wer": "6–8 Personen"
+              }
+            ]
           }
         ],
         "sachen_titel": "Außerdem gesucht",
         "sachen": [
-          "Kleiderstangen als Leihgabe",
-          "Brezeln und Kuchen für auf die Hand – als Spende"
+          "Kleiderstangen als Leihgabe (Freitag bringen, Samstag ab 16 Uhr abholen)",
+          "Kuchen, Muffins und Brezeln fürs Basar-Café – gern Samstag um 9 Uhr vorbeibringen"
         ],
-        "dank": "Kleines Dankeschön: Wer hilft, darf schon vor der Eröffnung stöbern – beim Aufbau am Freitagabend oder am Samstag vor dem Einlass.",
+        "dank": "Kleines Dankeschön: Wer hilft, darf am Samstag schon vor dem Einlass stöbern.",
         "knopf": "Ich helfe beim Basar",
         "formular": "https://tally.so/r/Ek9WXN"
       }
@@ -168,9 +119,9 @@
   },
   "news": [
     {
-      "datum": "21. September",
-      "titel": "Helfer für den Kinderbasar gesucht",
-      "text": "Für Freitag, 27.11., ab 16 Uhr suchen wir 8–10 Leute für den Aufbau. Am Samstag, 28.11., ab 9 Uhr brauchen wir 5–6 Aufsichten, 2–4 Leute für Kaffee und Kuchen und 2–3 für die Kasse. Dazu Kleiderstangen zum Ausleihen sowie Brezeln und Kuchen für auf die Hand. Helfer dürfen vorher schon stöbern!"
+      "datum": "23. November",
+      "titel": "Am Samstag ist Tespe Kinderbasar!",
+      "text": "28. November, 10 bis 14 Uhr in der Elbe-Grundschule, Früheinlass ab 9:30 Uhr für Schwangere und Eltern mit Tragebabys. Für den Samstag suchen wir noch Helfer für Aufsicht, Café, Kasse und Abbau – dazu Kuchenspenden und Kleiderstangen. Eintragen unter Helfen. Wer hilft, darf vor der Eröffnung stöbern."
     },
     {
       "datum": "18. September",
@@ -180,7 +131,7 @@
     {
       "datum": "14. September",
       "titel": "Anmeldungen laufen jetzt über die App",
-      "text": "Halloween, Kinderbasar, Kinoabend und die Beitrittserklärung – alles an einer Stelle, ohne Zettel im Ranzen."
+      "text": "Kinderbasar, Kinoabend und die Beitrittserklärung – alles an einer Stelle, ohne Zettel im Ranzen."
     }
   ],
   "mehr": {
